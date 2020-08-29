@@ -1,0 +1,229 @@
+<html>
+  <head>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 부가적인 테마 -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+    />
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script type=text/javascript> 
+
+
+    function Click_Send(){
+      $.ajax({
+        url:'/send_img'
+      });
+    }
+
+    function Click_L(cam){
+      $.ajax({
+        url:'/L/'+ cam
+      });
+    }
+
+    function Click_R(cam){
+      $.ajax({
+        url:'/R/'+ cam
+      });
+    }
+
+    function Click_U(cam){
+      $.ajax({
+        url:'/U/'+ cam
+      });
+    }
+
+    function Click_D(cam){
+      $.ajax({
+        url:'/D/'+ cam
+      });
+    }
+
+    function Click_C(cam){
+      $.ajax({
+        url:'/C/'+ cam
+      });
+    }
+
+    </script> 
+    <script>
+      if (!!window.EventSource) {
+        var source = new EventSource("/drone_num");
+        source.onmessage = function (e) {
+          var jbSplit = e.data.split(",");
+          for (var i in jbSplit) {
+            $("#cam" + i).text(jbSplit[i]);
+          }
+        };
+      }
+
+
+      $(document).ready(function (e){
+
+        $(document).on("click",".cam_video",function(){
+                var path = $(this).attr('src')
+                
+                var c = $(this).attr('class')
+                var cam = c.split(' ')[1]
+                showImage(path, cam)
+            });//end click event
+            
+        function showImage(fileCallPath, cam){
+                
+            $(".bigPictureWrapper").css("display","flex").show();
+            
+            $(".bigPicture")
+            .html("<img src='"+fileCallPath+"' >");
+
+            $('#UpButton').off('click');
+            $('#DownButton').off('click');
+            $('#LeftButton').off('click');
+            $('#RightButton').off('click');
+            $('#IintButton').off('click');
+             
+            $("#UpButton").attr("onclick","Click_U(\""+cam+"\")"); 
+            $("#DownButton").attr("onclick","Click_D(\""+cam+"\")"); 
+            $("#LeftButton").attr("onclick","Click_L(\""+cam+"\")"); 
+            $("#RightButton").attr("onclick","Click_R(\""+cam+"\")"); 
+            $("#IintButton").attr("onclick","Click_C(\""+cam+"\")"); 
+        }
+            
+            $(".bigPicture").on("click", function(e){
+                setTimeout(function(){
+                $('.bigPictureWrapper').hide();
+                }, 0);
+            });//end bigWrapperClick event
+        });
+    </script>
+    <style>
+      #drone_data{
+        text-align: right;
+      }
+      .bigPictureWrapper {
+        position: absolute;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: gray;
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.9);
+      }
+      .bigPicture {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .bigPicture img {
+        width: 1000px;
+      }
+</style>
+    <title>A.I. Anti-Drone Security Feed</title>
+  </head>
+
+  <body>
+    <div class="bigPictureWrapper">
+      <div class="bigPicture"></div>
+          <table>
+            <caption>controlrobot</caption>
+            <tr>
+                <td><input class="button" type="button" value="-" ></td>
+                <td><input class="button" type="button" value="U" id="UpButton"></td>
+                <td><input class="button" type="button" value="-" ></td>
+            </tr>
+            <tr>
+                <td><input class="button" type="button" value="L" id="LeftButton"></td>
+                <td><input class="button" type="button" value="C" id="IintButton"></td>
+                <td><input class="button" type="button" value="R" id="RightButton"></td>
+            </tr>
+            <tr>
+                <td><input class="button" type="button" value="-"></td>
+                <td><input class="button" type="button" value="D" id="DownButton"></td>
+                <td><input class="button" type="button" value="-"></td>
+            </tr>       
+        </table>
+    </div>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target="#navbar"
+            aria-expanded="false"
+            aria-controls="navbar"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"
+            >A.I. Anti-Drone Security streaming</a
+          >
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+      <br /><br /><br /><br />
+      <div class="row">
+        <div class="col-md-4">
+          
+          <img  class="cam_video cam1" src="{{ url_for('video_feed', idx = 1)}}">
+          <img  class="cam_video cam2" src="{{ url_for('video_feed', idx = 2)}}">
+        </div>
+
+        <div class="col-md-4">
+
+          <img class="cam_video cam3" src="{{ url_for('video_feed', idx = 3)}}">
+          <img class="cam_video cam4" src="{{ url_for('video_feed', idx = 4)}}">
+           
+        </div>
+
+        <div class="col-md-4" id="drone_data">
+          <h3 id="cam0"></h3>
+          <h3 id="cam1"></h3>
+          <h3 id="cam2"></h3>
+          <h3 id="cam3"></h3>
+          <h4 id="timedate">Date:</h4>
+          <input type = "button" id = "send_button" value = "Capture" onclick="Click_Send();"/>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+
+    <div class="container">
+      <br />
+      <hr class="featurette-divider" />
+
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2020 HANSUNG.univ &middot; Capstone Design</p>
+      </footer>
+    </div>
+  </body>
+</html>
