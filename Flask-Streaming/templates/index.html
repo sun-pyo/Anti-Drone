@@ -1,37 +1,36 @@
-<html>
-  <head>
-    <!-- 합쳐지고 최소화된 최신 CSS -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- 부가적인 테마 -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
-    />
-
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Creative - Start Bootstrap Theme</title>
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Third party plugin CSS-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    
     <script>
-      if (!!window.EventSource) {                                   //"/drone_num" url에서 이벤트 객체를 받아 다음 명령들을 실행합니다.
+      if (!!window.EventSource) {
         var source = new EventSource("/drone_num");
         source.onmessage = function (e) {
           var jbSplit = e.data.split(",");
           for (var i in jbSplit) {
-            $("#cam" + i).text(jbSplit[i]);                         //어떤 cam에 드론이 몇개 있는지 표시합니다.
+            $("#cam" + i).text(jbSplit[i]);
             var time = new Date();
             var D = 'Date: ' + time.getFullYear() + '-' + (time.getMonth()+1)+ '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
-            $("#timedate").text(D)                                  //시간을 표시합니다.
+            $("#timedate").text(D)
             var j = jbSplit[i].split(":");
             parseInt(j[1]);
-            if (j[1] != 0) {                                        //드론수가 1개이상이면 화면 테두리를 노란색으로 바꿔줍니다.
+            if (j[1] != 0) {
               var img = document.getElementById("video" + i);
               img.style.borderColor = "#ffff00";
             } else {
@@ -42,15 +41,17 @@
         };
       }
 
+
       $(document).ready(function (e){
 
         $(document).on("click",".cam_video",function(){
-                $('body').scrollTop(0);      // 스크롤 위로
+                $('html').scrollTop(0);      // 스크롤 위로
                 $("body").css("overflow", "hidden");  // 스크롤 숨기기
                 var path = $(this).attr('src')
                 var c = $(this).attr('class')
                 var cam = c.split(' ')[1]
                 showImage(path, cam)
+
                 
                 window.onkeydown = function(){
                   if(event.keyCode == 13){           //엔터키
@@ -83,45 +84,43 @@
                       url:'/C/'+ cam
                     });
                   }
-              }
-              window.onkeyup = function(){
-                event.keyCode = 9;
-              }
+                }
+                window.onkeyup = function(){
+                  event.keyCode = 9;
+                }
                 
           });//end click event
             
-        function showImage(fileCallPath, cam){                                  //이미지가 크게 보이게 하는 함수입니다.
+        function showImage(fileCallPath, cam){
             $(".bigPictureWrapper").css("display","flex").show();
             $(".bigPicture")
             .html("<img src='"+fileCallPath+"' >");
         }
             
-        $(".bigPicture").on("click", function(e){                           //다시 눌렸을때 큰 이미지가 사라지게하는 메소드입니다.
+        $(".bigPicture").on("click", function(e){
             $("body").css("overflow", "scroll");
             setTimeout(function(){
             $('.bigPictureWrapper').hide();
             }, 0);
         });//end bigWrapperClick event
 
-        
         var check = $("input[type='checkbox']");
         check.click(function(){
           $.ajax({
             url: "/mode_change",
-            async: true
+            //async: true
           });
-          $("p").toggle();
+          $(".Auto_text").toggle();
         });
-
-            
+        
       });
-    </script>                                                                   
-    <style>                                                                     /*css 스타일링입니다.*/
-      #drone_data {                                                                
+    </script>
+    <style>
+      #drone_data {
         text-align: left;
         font-family: 'Londrina Solid', cursive;
       }
-      .bigPictureWrapper {                                                      
+      .bigPictureWrapper {
         position: absolute;
         display: none;
         justify-content: center;
@@ -138,10 +137,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 60%;
+        height: 50%;
       }
 
       .bigPicture img {
-        width: 1000px;
+        width: 800px;
       }
 
       .cam_video{
@@ -209,7 +210,50 @@
       .Enter{
       width: 10em;
       }
-      
+      // colors
+    $blue: #269bff;
+    $bg-light: #f2f2f2;
+    $bg-med: #eee;
+
+    // the magic
+    div.checkbox.switcher{
+      label {padding: 0;
+        *{
+            vertical-align: middle;
+        }
+        input{
+          display: none;
+          &+span {position: relative; 
+                  display: inline-block; 
+                  margin-right: 10px; 
+                  width: 56px; 
+                  height: 28px; 
+                  background: $bg-light; 
+                  border: 1px solid $bg-med; 
+                  border-radius: 50px; 
+                  transition: all 0.3s ease-in-out;
+            small {
+                position: absolute;
+                display: block;
+                width: 50%;
+                height: 100%; 
+                background: #fff; 
+                border-radius: 50%; 
+                transition: all 0.3s ease-in-out;
+                left: 0;
+                }
+          }
+          &:checked+span {
+            background: $blue;
+            border-color: $blue;
+            small{
+              left: 50%;
+            }
+          }
+        }
+      }
+    }
+          
       .switch {
       position: relative;
       display: inline-block;
@@ -217,8 +261,7 @@
       height: 34px;
       vertical-align:middle;
     }
-
-    /* Hide default HTML checkbox */
+        /* Hide default HTML checkbox */
       .switch input {display:none;}
 
       /* The slider */
@@ -275,19 +318,137 @@
         font-size:15px;
         font-weight:bold;
       }
-    </style>
-  <title>A.I. Anti-Drone Security Feed</title>
-  </head>
 
-  <body>
-    <div class="bigPictureWrapper">                                             <!--큰화면 요소들입니다.-->                      
+    #Auto-Mode {
+      color: #757575; 
+      font-family: 'Lato', sans-serif; 
+      font-size: 16px;
+    }
+
+    .hd{
+        background-image: url('static/asd.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+            padding:260px;
+    }
+</style>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand js-scroll-trigger" href="#page-top">A.I Anti-Drone Security streaming</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Streaming</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class=hd>
+            <div class="container h-100">
+                <div class="row h-100 align-items-center justify-content-center text-center">
+                    <div class="col-lg-10 align-self-end">
+                        <h1 class="text-uppercase text-white font-weight-bold">#INCLUDE</h1>
+                        <hr class="divider my-4" />
+                    </div>
+                    <div class="col-lg-8 align-self-baseline">
+                        <p class="text-white-75 font-weight-light mb-5">컴퓨터 비전과 인공지능을 이용하여 카메라로 Anti-Drone시스템을 구축한 서비스로 
+                        실시간으로 웹 상에서 드론을 포착하는 영상을 확인 할 수 있습니다. </p>
+                        <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">about</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- About section-->
+        <section class="page-section bg-primary" id="about">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h2 class="text-white mt-0">Anti-Drone의 개념</h2>
+                        <hr class="divider light my-4" />
+                        <p class="text-white-50 mb-4">계속해서 발전하는 드론에 대해 방어체계를 구축한 새로운 기술 시스템입니다. </p>
+                        <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">자세히 보러가기</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Services section-->
+        <!-- Portfolio section-->
+        <section style="background:" id="portfolio">
+            <div class="container-fluid p-0">
+                <div class="row no-gutters">
+                    <div class="row">
+        <div class="col-lg-4 col-md-4">
+          <img  class="cam_video cam1" id='video0' src="{{ url_for('video_feed', idx = 1)}}">
+          <img  class="cam_video cam2" id='video1' src="{{ url_for('video_feed', idx = 2)}}">
+        </div>
+
+        <div class="col-lg-4 col-md-4">
+          <img class="cam_video cam3" id='video2' src="{{ url_for('video_feed', idx = 3)}}" >
+          <img class="cam_video cam4" id='video3' src="{{ url_for('video_feed', idx = 4)}}">
+        </div>
+
+        <div class="col-lg-4 col-md-4" id="drone_data">
+          <h3 id="cam0"></h3>
+          <h3 id="cam1"></h3>
+          <h3 id="cam2"></h3>
+          <h3 id="cam3"></h3>
+          <h3 id="timedate">Date:</h3>
+        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Call to action section-->
+        
+        <!-- Contact section-->
+        <section class="page-section" id="contact">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h2 class="mt-0">Let's Get In Touch!</h2>
+                        <hr class="divider my-4" />
+                        <p class="text-muted mb-5">Contact us If you have any question? Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
+                        <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
+                        <div>010-7236-1195</div>
+                    </div>
+                    <div class="col-lg-4 mr-auto text-center">
+                        <i class="fas fa-envelope fa-3x mb-3 text-muted"></i
+                        ><!-- Make sure to change the email address in BOTH the anchor text and the link target below!--><a class="d-block" href="mailto:contact@yourwebsite.com">hyeonwoo@naver.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer-->
+        <footer class="bg-light py-5">
+            <div class="container"><div class="small text-center text-muted">Copyright © 2020 - Anti-Drone</div></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{{url_for('static', filename = 'js/scripts.js')}}"></script>
+        <div class="bigPictureWrapper">                                             <!--큰화면 요소들입니다.-->                      
       <div class="bigPicture"></div>     
         <div class="col-md-4" style="width:250px; height:500px; float:right,top">
           <label class="switch">
             <input type="checkbox">
             <span class="slider round"></span>
           </label>
-          <p>Auto Mode</p><p style="display:none;" >Manual Mode</p><br>
+          <p class="Auto_text">Auto Mode</p><p style="display:none;" class="Auto_text" >Manual Mode</p><br>
           <span href="#" class="key c38" id="up">&#x25B2;</span> <span class = "exp">위로 이동</span><br>
           <a href="#" class="key" id="down"><span>&#x25BC;</span></a><span class = "exp">아래로 이동</span><br>
           <a href="#" class="key" id="left"><span>&#x25C0;</span></a><span class = "exp">왼쪽으로 이동</span><br>
@@ -297,68 +458,5 @@
         </div><br>
       </div>   
     </div>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="nav2">    <!-- 위에 바 요소들입니다.-->
-      <div class="container" id="nav1">
-        <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#navbar"
-            aria-expanded="false"
-            aria-controls="navbar"
-          >
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"
-            >A.I. Anti-Drone Security streaming</a
-          >
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="about.html">About</a></li>
-          </ul>
-        </div>
-        <!--/.nav-collapse -->
-      </div>
-    </nav>
-    <div class="container" id='nav3'>                                 <!-- 아래 영상나오는 요소들입니다.-->
-      <br /><br /><br /><br />
-      <div class="row">
-        <div class="col-md-4">
-          <img  class="cam_video cam1" id='video0' src="{{ url_for('video_feed', idx = 1)}}">
-          <img  class="cam_video cam2" id='video1' src="{{ url_for('video_feed', idx = 2)}}">
-        </div>
-
-        <div class="col-md-4">
-          <img class="cam_video cam3" id='video2' src="{{ url_for('video_feed', idx = 3)}}" >
-          <img class="cam_video cam4" id='video3' src="{{ url_for('video_feed', idx = 4)}}">
-        </div>
-
-        <div class="col-md-4" id="drone_data">                        <!-- 그 옆에 데이터 표시하는 요소들입니다.-->
-          <h3 id="cam0"></h3>
-          <h3 id="cam1"></h3>
-          <h3 id="cam2"></h3>
-          <h3 id="cam3"></h3>
-          <h3 id="timedate">Date:</h3>
-        </div>
-      </div>
-    </div>
-    <br /><br />
-
-    <div class="container">
-      <br />
-      <hr class="featurette-divider" />
-
-      <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>                   <!-- 맨 아래 요소들입니다.-->
-        <p>&copy; 2020 HANSUNG.univ &middot; Capstone Design</p>
-      </footer>
-    </div>
-  </body>
+    </body>
 </html>
