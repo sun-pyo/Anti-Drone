@@ -12,7 +12,7 @@
 
 
 ### 프로젝트_구조
-![Architecture](.img/Project_architecture.JPG "프로젝트 구조")
+![Architecture](img/Project_architecture.JPG "프로젝트 구조")
 >##### Raspberry Pi
 >* 총 4대의 라즈베리파이에서 각각 카메라로 영상을 촬영한다. 
 >* 촬영한 이미지를 학습된 SSD 모델을 통해 드론을 탐지하고 모터를 제어하여 카메라가 드론을 따라다니게 한다.
