@@ -18,19 +18,20 @@
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
     <script>
-      if (!!window.EventSource) {
+      if (!!window.EventSource) {                                   //"/drone_num" url에서 이벤트 객체를 받아 다음 명령들을 실행합니다.
         var source = new EventSource("/drone_num");
         source.onmessage = function (e) {
           var jbSplit = e.data.split(",");
           for (var i in jbSplit) {
-            $("#cam" + i).text(jbSplit[i]);
+            $("#cam" + i).text(jbSplit[i]);                         //어떤 cam에 드론이 몇개 있는지 표시합니다.
             var time = new Date();
             var D = 'Date: ' + time.getFullYear() + '-' + (time.getMonth()+1)+ '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
-            $("#timedate").text(D)
+            $("#timedate").text(D)                                  //시간을 표시합니다.
             var j = jbSplit[i].split(":");
             parseInt(j[1]);
-            if (j[1] != 0) {
+            if (j[1] != 0) {                                        //드론수가 1개이상이면 화면 테두리를 노란색으로 바꿔줍니다.
               var img = document.getElementById("video" + i);
               img.style.borderColor = "#ffff00";
             } else {
@@ -41,7 +42,6 @@
         };
       }
 
-
       $(document).ready(function (e){
 
         $(document).on("click",".cam_video",function(){
@@ -51,7 +51,6 @@
                 var c = $(this).attr('class')
                 var cam = c.split(' ')[1]
                 showImage(path, cam)
-
                 
                 window.onkeydown = function(){
                   if(event.keyCode == 13){           //엔터키
@@ -84,40 +83,45 @@
                       url:'/C/'+ cam
                     });
                   }
-                }
-                window.onkeyup = function(){
-                  event.keyCode = 9;
-                }
+              }
+              window.onkeyup = function(){
+                event.keyCode = 9;
+              }
                 
           });//end click event
             
-        function showImage(fileCallPath, cam){
+        function showImage(fileCallPath, cam){                                  //이미지가 크게 보이게 하는 함수입니다.
             $(".bigPictureWrapper").css("display","flex").show();
             $(".bigPicture")
             .html("<img src='"+fileCallPath+"' >");
         }
             
-            $(".bigPicture").on("click", function(e){
-                $("body").css("overflow", "scroll");
-                setTimeout(function(){
-                $('.bigPictureWrapper').hide();
-                }, 0);
-            });//end bigWrapperClick event
+        $(".bigPicture").on("click", function(e){                           //다시 눌렸을때 큰 이미지가 사라지게하는 메소드입니다.
+            $("body").css("overflow", "scroll");
+            setTimeout(function(){
+            $('.bigPictureWrapper').hide();
+            }, 0);
+        });//end bigWrapperClick event
+
+        
+        var check = $("input[type='checkbox']");
+        check.click(function(){
+          $.ajax({
+            url: "/mode_change",
+            async: true
+          });
+          $("p").toggle();
+        });
+
+            
       });
-      $('.switch input').on('change', function(){
-        var dad = $(this).parent();
-        if($(this).is(':checked'))
-          dad.addClass('switch-checked');
-        else
-          dad.removeClass('switch-checked');
-      });
-    </script>
-    <style>
-      #drone_data {
+    </script>                                                                   
+    <style>                                                                     /*css 스타일링입니다.*/
+      #drone_data {                                                                
         text-align: left;
         font-family: 'Londrina Solid', cursive;
       }
-      .bigPictureWrapper {
+      .bigPictureWrapper {                                                      
         position: absolute;
         display: none;
         justify-content: center;
@@ -205,64 +209,96 @@
       .Enter{
       width: 10em;
       }
-      // colors
-   
-
-    .switch{
+      
+      .switch {
       position: relative;
       display: inline-block;
-      width: 50px;
-      height: 27px;
-      border-radius: 27px;
-      box-shadow: inset 0px 0px 0px 1px #bdc3c7;
-      cursor: pointer;
-      transition: all .3s;
+      width: 60px;
+      height: 34px;
+      vertical-align:middle;
     }
 
-    .switch input{
-      display: none;
-    }
-    .switch input:checked + div{
-      background-color: #3498db;
-      left: calc(100% - 25px);
-    }
-    .switch div{
-      position: absolute;
-      width: 25px;
-      height: 25px;
-      border-radius: 25px;
-      background-color: rgb(150,150,150);
-      top: 1px;
-      left: 0px;
-      transition: all .4s;
-    }
+    /* Hide default HTML checkbox */
+      .switch input {display:none;}
 
-    .switch{
-      box-shadow : inset 0px 0px 0px 1px #3498db;
-    }
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
 
-</style>
-    <title>A.I. Anti-Drone Security Feed</title>
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      p {
+        margin:0px;
+        display:inline-block;
+        font-size:15px;
+        font-weight:bold;
+      }
+    </style>
+  <title>A.I. Anti-Drone Security Feed</title>
   </head>
 
   <body>
-    <div class="bigPictureWrapper">
+    <div class="bigPictureWrapper">                                             <!--큰화면 요소들입니다.-->                      
       <div class="bigPicture"></div>     
-      <div class="col-md-4" style="width:250px; height:500px; float:right,top">
-        <label id="switch" >
-          <input type="checkbox" checked/>
-          <div></div>
-        </label>
-        <span href="#" class="key c38" id="up">&#x25B2;</span> <span class = "exp">위로 이동</span><br>
-        <a href="#" class="key" id="down"><span>&#x25BC;</span></a><span class = "exp">아래로 이동</span><br>
-        <a href="#" class="key" id="left"><span>&#x25C0;</span></a><span class = "exp">왼쪽으로 이동</span><br>
-        <a href="#" class="key" id="right"><span>&#x25B6;</span></a><span class = "exp">오른쪽으로 이동</span><br>
-        <a href="#" class="key Enter" id="enter"><span>Enter</span></a><span class = "exp">사진 저장</span><br>
-        <a href="#" class="key space" id="space"><span>space</span></a><span class = "exp">원점으로 돌아가기</span>
+        <div class="col-md-4" style="width:250px; height:500px; float:right,top">
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+          <p>Auto Mode</p><p style="display:none;" >Manual Mode</p><br>
+          <span href="#" class="key c38" id="up">&#x25B2;</span> <span class = "exp">위로 이동</span><br>
+          <a href="#" class="key" id="down"><span>&#x25BC;</span></a><span class = "exp">아래로 이동</span><br>
+          <a href="#" class="key" id="left"><span>&#x25C0;</span></a><span class = "exp">왼쪽으로 이동</span><br>
+          <a href="#" class="key" id="right"><span>&#x25B6;</span></a><span class = "exp">오른쪽으로 이동</span><br>
+          <a href="#" class="key Enter" id="enter"><span>Enter</span></a><span class = "exp">사진 저장</span><br>
+          <a href="#" class="key space" id="space"><span>space</span></a><span class = "exp">원점으로 돌아가기</span>
+        </div><br>
       </div>   
     </div>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="nav2">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="nav2">    <!-- 위에 바 요소들입니다.-->
       <div class="container" id="nav1">
         <div class="navbar-header">
           <button
@@ -291,7 +327,7 @@
         <!--/.nav-collapse -->
       </div>
     </nav>
-    <div class="container" id='nav3'>
+    <div class="container" id='nav3'>                                 <!-- 아래 영상나오는 요소들입니다.-->
       <br /><br /><br /><br />
       <div class="row">
         <div class="col-md-4">
@@ -304,7 +340,7 @@
           <img class="cam_video cam4" id='video3' src="{{ url_for('video_feed', idx = 4)}}">
         </div>
 
-        <div class="col-md-4" id="drone_data">
+        <div class="col-md-4" id="drone_data">                        <!-- 그 옆에 데이터 표시하는 요소들입니다.-->
           <h3 id="cam0"></h3>
           <h3 id="cam1"></h3>
           <h3 id="cam2"></h3>
@@ -320,7 +356,7 @@
       <hr class="featurette-divider" />
 
       <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p class="pull-right"><a href="#">Back to top</a></p>                   <!-- 맨 아래 요소들입니다.-->
         <p>&copy; 2020 HANSUNG.univ &middot; Capstone Design</p>
       </footer>
     </div>
