@@ -174,14 +174,15 @@ class Window(QWidget):
 
         for i in range(len(cam_list)):
             dnum.append(self.stream.read_dnum(cam_list[i]))
-            self.lb_dnumList[i].setText("Cam{}: {}   distance{} : {}m".format((i+1), dnum[i], (i+1), self.stream.read_distance(cam_list[i])))
             # 드론이 출현한 화면, 글자 강조하기 위한 색변경 
             if dnum[i] > 0:
                 self.lb_dnumList[i].setStyleSheet("Color: Red")  
-                self.frameList[i].setStyleSheet(" border-style: solid; border-width: 8px; border-color: #00FF00;")  
+                self.frameList[i].setStyleSheet(" border-style: solid; border-width: 8px; border-color: #00FF00;")
+                self.lb_dnumList[i].setText("Cam{}: {}   distance{} : {}m".format((i+1), dnum[i], (i+1), self.stream.read_distance(cam_list[i])))  
             else:
                 self.lb_dnumList[i].setStyleSheet("Color: Black")
                 self.frameList[i].setStyleSheet(" border-style: solid; border-width: 8px; border-color: #F5F5F5;") 
+                self.lb_dnumList[i].setText("Cam{}: {}   distance{} : 0m".format((i+1), dnum[i], (i+1)))
         
     # 이미지 저장 서버로 이미지 전송
     def Save_img(self, cam):
