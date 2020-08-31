@@ -114,6 +114,13 @@ def C(cam):
     WebcamVideoStream.move_Init(cam)
     return '', 204
 
+@app.route('/mode_change')
+def mode_change():
+    print('Auto')
+    WebcamVideoStream.AutoMode_Flag()
+    return '', 204
+
+
 if __name__ == '__main__':
     WebcamVideoStream().start()
     app.run(host='0.0.0.0', debug=False, threaded=True)
