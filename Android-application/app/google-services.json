@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "410516002311",
+    "firebase_url": "https://firestore-1add2.firebaseio.com",
+    "project_id": "firestore-1add2",
+    "storage_bucket": "firestore-1add2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410516002311:android:d79c372e1980cce9db3ca2",
+        "android_client_info": {
+          "package_name": "com.example.droneapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410516002311-tbv21nasegtdrb7i365doi2vf8tadb9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBStt-RvxC9JP2BLJAPRUT5z-a_Zazjbn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410516002311-tbv21nasegtdrb7i365doi2vf8tadb9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410516002311:android:346046cc09be1dacdb3ca2",
+        "android_client_info": {
+          "package_name": "com.example.firestoreexampleproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410516002311-tbv21nasegtdrb7i365doi2vf8tadb9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBStt-RvxC9JP2BLJAPRUT5z-a_Zazjbn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410516002311-tbv21nasegtdrb7i365doi2vf8tadb9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
