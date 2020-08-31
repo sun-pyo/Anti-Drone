@@ -47,6 +47,10 @@
 >   #### Software
 >    * Python 3.7.6
 >    * opencv 4.2.0
+>    * imutils 0.5.3
+>    * numpy 1.18.5
+>    * tensorflow 2.1.0
+
 
 
 
