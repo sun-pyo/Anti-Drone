@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                     default=0.9)
 parser.add_argument('--savedir', help='Name of the xml folder containing images xml.',
-                    default=save)
+                    default='save')
 
 args = parser.parse_args()
 min_conf_threshold = float(args.threshold)
@@ -83,7 +83,7 @@ while True:
             f.write('\t\t</bndbox>\n\t</object>\n')
         f.write('</annotation>')
         #time.sleep(0.1)
-        f.close
+        f.close()
         print('createXML')
     
     end_time = time.time()
