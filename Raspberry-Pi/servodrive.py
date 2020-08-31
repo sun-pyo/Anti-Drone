@@ -15,7 +15,7 @@ class ServoMotor():
     """
     Class used for turret control.
     """    
-
+    # 30 ~ 150
     # freq(10) 기준  0 ~ 180도 -> 200 ~ 690 pulse 
 
     def __init__(self):
@@ -23,8 +23,8 @@ class ServoMotor():
         self.pan_min = 363  # 60도
         self.pan_max = 526  # 120도
         self.servo_mean = 445 # 90도 
-        self.tilt_min = 200 # 0도
-        self.tilt_max = 690 # 180도 
+        self.tilt_min = 282 # 0도
+        self.tilt_max = 608 # 150도 
         self.tiltpulse = self.servo_mean
         self.panpulse = self.servo_mean
         self.pwm.set_pwm_freq(10)
