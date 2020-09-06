@@ -10,6 +10,7 @@ import numpy as np
 from imutils import build_montages
 from datetime import datetime
 import imutils
+import math
 
 
 class WebcamVideoStream:
@@ -35,7 +36,9 @@ class WebcamVideoStream:
         self.frame = imutils.resize(self.frame, width=400)
         self.stopped = False
 
-    rectangule_color = (10, 255, 0)
+        self.camList = ['cam1','cam2','cam3','cam4']
+
+    rectangule_color = (10, 0, 255)
     boxthickness = 3
     map_shape = (400, 400)
 
@@ -56,6 +59,22 @@ class WebcamVideoStream:
         'cam2':'None',
         'cam3':'None',
         'cam4':'None'
+    }
+
+    # 카메라 고정 위치
+    Start_Point_Dict = {
+        'cam1':(100,250),
+        'cam2':(200,250),
+        'cam3':(300,250),
+        'cam4':(400,250),
+    }
+
+    # 초기 기준 각도   3시 방향 부터 0도, 6시 방향 90도, 9시 180도, 12시 270도
+    Angle_dict = {
+        'cam1':-90,
+        'cam2':-90,
+        'cam3':-90,
+        'cam4':-90,
     }
 
     # index 0 : drone number, index 1 : ymin, index 2 : xmin, index 3: ymax, index 4 : xmax
@@ -194,15 +213,31 @@ class WebcamVideoStream:
             frame = cls.frameDict[name].copy()
             if int(cls.Dronedata_Dict[name][0]) > 0:
                 scores = list(map(float, cls.Dronedata_Dict[name][5]))
-                ymin = cls.Dronedata_Dict[name][1]
-                xmin = cls.Dronedata_Dict[name][2]
-                ymax = cls.Dronedata_Dict[name][3]
-                xmax = cls.Dronedata_Dict[name][4]
+                ymin = list(map(int, cls.Dronedata_Dict[name][1]))
+                xmin = list(map(int, cls.Dronedata_Dict[name][2]))
+                ymax = list(map(int, cls.Dronedata_Dict[name][3]))
+                xmax = list(map(int, cls.Dronedata_Dict[name][4]))
+
+                # 십자 라인 그리기 (트래킹 하는 드론 표시)
+                most = scores.index(max(scores))
+                most_ymin = ymin[most]
+                most_xmin = xmin[most]
+                most_ymax = ymax[most]
+                most_xmax = xmax[most]
+                x_medium = int((most_xmin+most_xmax)/2)
+                y_medium = int((most_ymin+most_ymax)/2)
+                rows, cols, _ = frame.shape
+                cv2.line(frame, (x_medium, 0), (x_medium, rows), cls.rectangule_color, 2)
+                cv2.line(frame, (0, y_medium), (cols, y_medium), cls.rectangule_color, 2)
+
                 for i in range(len(scores)):
                     if ((scores[i] > 0.5) and (scores[i] <= 1.0)):
                         
                         # 바운딩 박스 그리기
-                        cv2.rectangle(frame, (xmin[i],ymin[i]), (xmax[i],ymax[i]), cls.rectangule_color, cls.boxthickness)  #xmax = x+w ymax = y+h 
+                        if i == most:
+                            cv2.rectangle(frame, (xmin[i],ymin[i]), (xmax[i],ymax[i]), cls.rectangule_color, cls.boxthickness)  #xmax = x+w ymax = y+h
+                        else:
+                            cv2.rectangle(frame, (xmin[i],ymin[i]), (xmax[i],ymax[i]), (0,255,255), cls.boxthickness)  #xmax = x+w ymax = y+h 
                          
                         label = '%s: %d%%' % ('Drone', int(scores[i]*100)) # 드론일 확률 나타냄
                         labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
@@ -255,6 +290,29 @@ class WebcamVideoStream:
         else:
             cls.Auto_mode = True
         return cls.Auto_mode
+
+    def Radar_map(self):
+        img = cv2.imread('board.jpg')
+        img = cv2.resize(img, (500,500))
+        for name in self.camList:    
+            if name in self.Dronedata_Dict:
+                r = 300
+                center = (int(self.Dronedata_Dict[name][6][0])-200)*180/490 + self.Angle_dict[name]
+                x_start = self.Start_Point_Dict[name][0]
+                y_start = self.Start_Point_Dict[name][1]
+                x_left = int(x_start + r*np.sin(math.radians(-30+center)))
+                y_left = int(y_start + r*np.cos(math.radians(-30+center)))
+                x_right = int(x_start + r*np.sin(math.radians(30+center)))
+                y_right = int(y_start + r*np.cos(math.radians(30+center)))
+                cv2.line(img, (x_start,y_start), (x_left,y_left), (0,255,0),1, cv2.LINE_AA)
+                cv2.line(img, (x_start,y_start), (x_right,y_right), (0,255,0),1, cv2.LINE_AA)
+                if self.Dronedata_Dict[name][0] > 0:
+                    distance = int(self.Dronedata_Dict[name][7])*50
+                    x_center = int(x_start + distance*np.sin(math.radians(center)))
+                    y_center = int(y_start + distance*np.cos(math.radians(center)))
+                    cv2.line(img, (x_center, y_center),(x_center, y_center),(0,255,0),5)
+        return img
+
             
     def stop(self):
         self.stopped = True

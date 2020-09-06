@@ -72,6 +72,11 @@ class Window(QWidget):
         self.Big_frame.move(5,5)
         self.Big_frame.setVisible(False)
 
+        self.radar_frame = QLabel(self)
+        self.radar_frame.resize(self.video_width, self.video_height)
+        self.radar_frame.setScaledContents(True)
+        self.radar_frame.move(25+self.video_width*2, 15+self.video_height)
+
         self.start_all()
         self.show()
 
@@ -131,6 +136,10 @@ class Window(QWidget):
             qImg = QImage(self.imgList[i].data, self.imgList[i].shape[1], self.imgList[i].shape[0], self.imgList[i].shape[1]*self.imgList[i].shape[2], QImage.Format_RGB888)
             self.frameList[i].setPixmap(QPixmap.fromImage(qImg))        
 
+        img = cv2.cvtColor(self.stream.Radar_map(), cv2.COLOR_BGR2RGB)
+        qImg = QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QImage.Format_RGB888)
+        self.radar_frame.setPixmap(QPixmap.fromImage(qImg))
+        
         self.set_text()
 
         
@@ -160,6 +169,10 @@ class Window(QWidget):
         self.img = cv2.cvtColor(self.stream.read_frame(cam), cv2.COLOR_BGR2RGB)
         qImg = QImage(self.img.data, self.img.shape[1], self.img.shape[0], self.img.shape[1]*self.img.shape[2], QImage.Format_RGB888)
         self.Big_frame.setPixmap(QPixmap.fromImage(qImg))
+
+        img = cv2.cvtColor(self.stream.Radar_map(), cv2.COLOR_BGR2RGB)
+        qImg = QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QImage.Format_RGB888)
+        self.radar_frame.setPixmap(QPixmap.fromImage(qImg))
 
         self.set_text()
     
