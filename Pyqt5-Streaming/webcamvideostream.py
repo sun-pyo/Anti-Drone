@@ -69,12 +69,12 @@ class WebcamVideoStream:
         'cam4':(400,250),
     }
 
-    # 초기 기준 각도   3시 방향 부터 0도, 6시 방향 90도, 9시 180도, 12시 270도
+    # 초기 기준 각도   3시 방향 부터 0도, 12시 방향 90도, 9시 180도, 6시 270도
     Angle_dict = {
-        'cam1':-90,
-        'cam2':-90,
-        'cam3':-90,
-        'cam4':-90,
+        'cam1': 90,
+        'cam2': 90,
+        'cam3': 90,
+        'cam4': 90,
     }
 
     # index 0 : drone number, index 1 : ymin, index 2 : xmin, index 3: ymax, index 4 : xmax
@@ -307,7 +307,7 @@ class WebcamVideoStream:
                 cv2.line(img, (x_start,y_start), (x_left,y_left), (0,255,0),1, cv2.LINE_AA)
                 cv2.line(img, (x_start,y_start), (x_right,y_right), (0,255,0),1, cv2.LINE_AA)
                 if self.Dronedata_Dict[name][0] > 0:
-                    distance = int(self.Dronedata_Dict[name][7])*50
+                    distance = int(self.Dronedata_Dict[name][7]*100)
                     x_center = int(x_start + distance*np.sin(math.radians(center)))
                     y_center = int(y_start + distance*np.cos(math.radians(center)))
                     cv2.line(img, (x_center, y_center),(x_center, y_center),(0,255,0),5)
