@@ -208,7 +208,7 @@ class WebcamVideoStream:
     
     # 해당하는 라즈베리파이의 Frame을 읽고, cv2로 바운딩 박스 및 Text를 그려서 return
     @classmethod
-    def read_frame(cls, name):
+    def get_frame(cls, name):
         if name in cls.frameDict:
             frame = cls.frameDict[name].copy()
             if int(cls.Dronedata_Dict[name][0]) > 0:
@@ -260,7 +260,7 @@ class WebcamVideoStream:
 
     # 해당하는 라즈베리파이에서 발견된 드론의 수를 return 
     @classmethod
-    def read_dnum(cls, name):
+    def get_dnum(cls, name):
         if name in cls.Dronedata_Dict:
             return int(cls.Dronedata_Dict[name][0])
         else:
@@ -268,7 +268,7 @@ class WebcamVideoStream:
 
     # 해당하는 라즈베리파이에서 발견된 드론 중 가장 확률이 높은 드론의 거리를 return 
     @classmethod
-    def read_distance(cls, name):
+    def get_distance(cls, name):
         if name in cls.Dronedata_Dict:
             return float(cls.Dronedata_Dict[name][7])
         else:
@@ -307,7 +307,7 @@ class WebcamVideoStream:
                 cv2.line(img, (x_start,y_start), (x_left,y_left), (0,255,0),1, cv2.LINE_AA)
                 cv2.line(img, (x_start,y_start), (x_right,y_right), (0,255,0),1, cv2.LINE_AA)
                 if self.Dronedata_Dict[name][0] > 0:
-                    distance = int(self.Dronedata_Dict[name][7]*100)
+                    distance = int(self.Dronedata_Dict[name][7]*150)
                     x_center = int(x_start + distance*np.sin(math.radians(center)))
                     y_center = int(y_start + distance*np.cos(math.radians(center)))
                     cv2.line(img, (x_center, y_center),(x_center, y_center),(0,255,0),5)

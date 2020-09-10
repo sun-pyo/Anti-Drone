@@ -99,7 +99,7 @@ class Window(QWidget):
     # 영상 Label 생성
     def create_frame(self):
         for i in range(4):
-            self.imgList.append(self.stream.read_frame('cam'+str(i+1)))
+            self.imgList.append(self.stream.get_frame('cam'+str(i+1)))
             self.frameList.append(QLabel(self))
             self.frameList[i].resize(self.video_width, self.video_height)
             self.frameList[i].setScaledContents(True)
@@ -132,7 +132,7 @@ class Window(QWidget):
     # 4분할 영상 송출
     def nextFrameSlot(self):
         for i in range(4):
-            self.imgList[i] = cv2.cvtColor(self.stream.read_frame('cam'+str(i+1)),cv2.COLOR_BGR2RGB)
+            self.imgList[i] = cv2.cvtColor(self.stream.get_frame('cam'+str(i+1)),cv2.COLOR_BGR2RGB)
             qImg = QImage(self.imgList[i].data, self.imgList[i].shape[1], self.imgList[i].shape[0], self.imgList[i].shape[1]*self.imgList[i].shape[2], QImage.Format_RGB888)
             self.frameList[i].setPixmap(QPixmap.fromImage(qImg))        
 
@@ -166,7 +166,7 @@ class Window(QWidget):
 
     # 큰 화면 영상 송출
     def next_Bigframe(self, cam):
-        self.img = cv2.cvtColor(self.stream.read_frame(cam), cv2.COLOR_BGR2RGB)
+        self.img = cv2.cvtColor(self.stream.get_frame(cam), cv2.COLOR_BGR2RGB)
         qImg = QImage(self.img.data, self.img.shape[1], self.img.shape[0], self.img.shape[1]*self.img.shape[2], QImage.Format_RGB888)
         self.Big_frame.setPixmap(QPixmap.fromImage(qImg))
 
@@ -186,12 +186,12 @@ class Window(QWidget):
         cam_list = ['cam1','cam2','cam3','cam4']
 
         for i in range(len(cam_list)):
-            dnum.append(self.stream.read_dnum(cam_list[i]))
+            dnum.append(self.stream.get_dnum(cam_list[i]))
             # 드론이 출현한 화면, 글자 강조하기 위한 색변경 
             if dnum[i] > 0:
                 self.lb_dnumList[i].setStyleSheet("Color: Red")  
                 self.frameList[i].setStyleSheet(" border-style: solid; border-width: 8px; border-color: #00FF00;")
-                self.lb_dnumList[i].setText("Cam{}: {}   distance{} : {}m".format((i+1), dnum[i], (i+1), self.stream.read_distance(cam_list[i])))  
+                self.lb_dnumList[i].setText("Cam{}: {}   distance{} : {}m".format((i+1), dnum[i], (i+1), self.stream.get_distance(cam_list[i])))  
             else:
                 self.lb_dnumList[i].setStyleSheet("Color: Black")
                 self.frameList[i].setStyleSheet(" border-style: solid; border-width: 8px; border-color: #F5F5F5;") 

@@ -92,6 +92,11 @@ class ServoMotor():
         else:
             self.reset()
             return
+        
+        if self.tiltpulse < tilt:
+            self.tiltpulse += 10
+        else:
+            self.tiltpulse -= 10
 
         self.pwm.set_pwm(1, 0, self.tiltpulse)
         self.pwm.set_pwm(0, 0, self.panpulse)
