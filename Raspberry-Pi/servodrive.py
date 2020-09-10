@@ -83,6 +83,7 @@ class ServoMotor():
 
     # 정해진 신호에 따라 해당 방향으로 이동
     def set_pulse(self, L_or_R, tilt):
+        
         if L_or_R == 'L':
             self.panpulse += 10
             self.tiltpulse = int(tilt)

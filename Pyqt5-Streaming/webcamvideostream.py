@@ -155,9 +155,9 @@ class WebcamVideoStream:
             if left_dnum == right_dnum:
                 if left_dnum == 0:
                     return 'True 0 0'
-                elif max(self.Dronedata_Dict[left][5]) > max(self.Dronedata_Dict[right][5]):
+                elif max(self.Dronedata_Dict[left][7]) > max(self.Dronedata_Dict[right][7]):
                      return 'True L ' + str(self.Dronedata_Dict[left][6][1])
-                elif max(self.Dronedata_Dict[right][5]) > max(self.Dronedata_Dict[left][5]):
+                elif max(self.Dronedata_Dict[right][7]) > max(self.Dronedata_Dict[left][7]):
                     return 'True R ' + str(self.Dronedata_Dict[right][6][1])
                 else:
                     return 'True 0 0'
