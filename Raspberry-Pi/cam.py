@@ -252,22 +252,21 @@ while True:
     
   Auto_flag = bool(message[0])
 
-  if len(num) == 0:
-    if Auto_flag == False: # 수동모드
-        if message[1] == 'R':
-            s.right()
-        elif message[1] == 'L':
-            s.left()
-        elif message[1] == 'U':
-            s.up()
-        elif message[1] == 'D':
-            s.down()
-        elif message[1] == 'C':
-            s.reset()
-    # 자동모드, 정해진 시간동안 드론이 없었을 경우 (2초) 
-    elif Auto_flag == True and (datetime.now() - Last_time).seconds > No_Drone_Time:
-        s.set_pulse(message[1], message[2])
-  
+  if Auto_flag == False: # 수동모드
+      if message[1] == 'R':
+          s.right()
+      elif message[1] == 'L':
+          s.left()
+      elif message[1] == 'U':
+          s.up()
+      elif message[1] == 'D':
+          s.down()
+      elif message[1] == 'C':
+          s.reset()
+  # 자동모드, 정해진 시간동안 드론이 없었을 경우 (2초) 
+  elif Auto_flag == True and (datetime.now() - Last_time).seconds > No_Drone_Time:
+      s.set_pulse(message[1], message[2])
+
 
   # Calculate framerate
   t2 = cv2.getTickCount()
