@@ -36,7 +36,7 @@ class WebcamVideoStream:
         self.frame = imutils.resize(self.frame, width=400)
         self.stopped = False
 
-        self.camList = ['cam1','cam2','cam3','cam4']
+    camList = ['cam1','cam2','cam3','cam4']
 
     rectangule_color = (10, 0, 255)
     boxthickness = 3
@@ -299,23 +299,24 @@ class WebcamVideoStream:
             cls.Auto_mode = True
         return cls.Auto_mode
 
-    def Radar_map(self):
+    @classmethod
+    def Radar_map(cls):
         img = cv2.imread('board.jpg')
         img = cv2.resize(img, (500,500))
-        for name in self.camList:    
-            if name in self.Dronedata_Dict:
+        for name in cls.camList:    
+            if name in cls.Dronedata_Dict:
                 r = 300
-                center = (int(self.Dronedata_Dict[name][6][0])-200)*180/490 + self.Angle_dict[name]
-                x_start = self.Start_Point_Dict[name][0]
-                y_start = self.Start_Point_Dict[name][1]
+                center = (int(cls.Dronedata_Dict[name][6][0])-200)*180/490 + cls.Angle_dict[name]
+                x_start = cls.Start_Point_Dict[name][0]
+                y_start = cls.Start_Point_Dict[name][1]
                 x_left = int(x_start + r*np.sin(math.radians(-30+center)))
                 y_left = int(y_start + r*np.cos(math.radians(-30+center)))
                 x_right = int(x_start + r*np.sin(math.radians(30+center)))
                 y_right = int(y_start + r*np.cos(math.radians(30+center)))
                 cv2.line(img, (x_start,y_start), (x_left,y_left), (0,255,0),1, cv2.LINE_AA)
                 cv2.line(img, (x_start,y_start), (x_right,y_right), (0,255,0),1, cv2.LINE_AA)
-                if self.Dronedata_Dict[name][0] > 0:
-                    distance = int(self.Dronedata_Dict[name][7]*150)
+                if cls.Dronedata_Dict[name][0] > 0:
+                    distance = int(cls.Dronedata_Dict[name][7]*150)
                     x_center = int(x_start + distance*np.sin(math.radians(center)))
                     y_center = int(y_start + distance*np.cos(math.radians(center)))
                     cv2.line(img, (x_center, y_center),(x_center, y_center),(0,255,0),5)

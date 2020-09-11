@@ -25,7 +25,8 @@ if (!!window.EventSource) {
 $(document).ready(function (e){
 
   $(document).on("click",".cam_video",function(){
-          $('html').scrollTop(0);      // 스크롤 위로
+          $('html').scrollTop(1500);      // 스크롤 위로
+          //$('html').animate({scrollTop : offset.top}, 2400);
           $("body").css("overflow", "hidden");  // 스크롤 숨기기
           var path = $(this).attr('src')
           var c = $(this).attr('class')

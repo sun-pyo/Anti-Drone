@@ -56,6 +56,23 @@ def video_feed(idx):
     return Response(cam(idx),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+def radar():
+    while True:
+        radar_frame = WebcamVideoStream.Radar_map()
+        ret, jpeg = cv2.imencode('.jpg',radar_frame)
+        if jpeg is not None:
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
+        else:
+            print("frame is none")
+
+@app.route('/Radar_map')
+def Radar_map():
+    return Response(radar(),
+                mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
 @app.route('/drone_num')
 def drone_num():
     rpi_name_list = ['cam1','cam2','cam3','cam4','cam5']
