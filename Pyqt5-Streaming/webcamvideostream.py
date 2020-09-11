@@ -155,9 +155,9 @@ class WebcamVideoStream:
             if left_dnum == right_dnum:
                 if left_dnum == 0:
                     return 'True 0 0'
-                elif max(self.Dronedata_Dict[left][7]) > max(self.Dronedata_Dict[right][7]):
+                elif max(self.Dronedata_Dict[left][5]) > max(self.Dronedata_Dict[right][5]):
                      return 'True L ' + str(self.Dronedata_Dict[left][6][1])
-                elif max(self.Dronedata_Dict[right][7]) > max(self.Dronedata_Dict[left][7]):
+                elif max(self.Dronedata_Dict[right][5]) < max(self.Dronedata_Dict[left][5]):
                     return 'True R ' + str(self.Dronedata_Dict[right][6][1])
                 else:
                     return 'True 0 0'
@@ -273,14 +273,22 @@ class WebcamVideoStream:
             return float(cls.Dronedata_Dict[name][7])
         else:
             return 0
+
+    # 실질적인 이미지 전송
+    def send(self, name, address):
+        print('send img', name)
+        sender = imagezmq.ImageSender("tcp://{}:5001".format(address))
+        mem = sender.send_image(list(self.Dronedata_Dict[name]),name, self.frameDict[name])
+    
     # 해당하는 라즈베리파이의 이미지와 모델에서 출력한 드론 위치 정보를 이미지 저장하는 컴퓨터로 전송
     @classmethod
-    def send_frame(cls, name, adress):
-        print(name)
+    def send_frame(cls, name, address):
         if name in cls.frameDict:
             print('send img')
-            sender = imagezmq.ImageSender("tcp://{}:5001".format(adress))
-            mem = sender.send_image(list(cls.Dronedata_Dict[name]),name, cls.frameDict[name])
+            t = Thread(target=cls.send, args=(cls, name, address))
+            t.daemon = True
+            t.start()
+
 
     # AutoMode 변경 
     @classmethod
