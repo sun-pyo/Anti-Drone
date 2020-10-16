@@ -8,6 +8,7 @@ import importlib.util
 import argparse
 from servodrive import ServoMotor
 from datetime import datetime
+from digital import Digital_Controller
 #from imutils.video import VideoStream
 import os
 from videostream import VideoStream
@@ -20,6 +21,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import storage
+from gpiozero import Buzzer
 
 
 
@@ -50,11 +52,12 @@ resW, resH = args.resolution.split('x')
 imW, imH = int(resW), int(resH)
 use_TPU = args.edgetpu
 
-cred = credentials.Certificate('drone-detection-js-firebase-adminsdk-4xh9r-3ba93b9ccd.json')
+#cred = credentials.Certificate('drone-detection-js-firebase-adminsdk-4xh9r-3ba93b9ccd.json')
 # Initialize the app with a service account, granting admin privileges
-cred = credentials.Certificate('firestore-1add2-firebase-adminsdk-7vjg4-6c20413010.json')
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+
+#cred = credentials.Certificate('firestore-1add2-firebase-adminsdk-7vjg4-6c20413010.json')
+#firebase_admin.initialize_app(cred)
+#db = firestore.client()
 
 
 # Import TensorFlow libraries
@@ -139,10 +142,14 @@ xmax = []
 Drone_data = []
 pulse = []
 
+buzzer = Buzzer(17)
+buzzer.off()
+laser = Digital_Controller(12)
+
 sender = imagezmq.ImageSender(connect_to="tcp://{}:5555".format(args.server))
 rpi_name = socket.gethostname() # 각 라즈베리파이의 hostname을 cam1 ~ cam4로 설정해둠 
 picam = VideoStream(resolution=(imW,imH),framerate=30).start() # 영상 시작
-print(picam.read().shape)
+#print(picam.read().shape)
 time.sleep(1.0)  # allow camera sensor to warm up
 
 frame1 = picam.read()
@@ -198,12 +205,12 @@ while True:
     Last_time = datetime.now()
 
     # 드론 개수와 거리, 현재 시간을 firebase에 기록 
-    doc_ref_drone = db.collection(u'robot').document(u'sky')
-    doc_ref_drone.set({
-    u'Num_of_drone': len(num),
-    u'Distance' : distance,
-    u'date' : firestore.SERVER_TIMESTAMP, #date
-    })
+    #doc_ref_drone = db.collection(u'robot').document(u'sky')
+    #doc_ref_drone.set({
+    #u'Num_of_drone': len(num),
+    #u'Distance' : distance,
+    #u'date' : firestore.SERVER_TIMESTAMP, #date
+    #})
 
     D = lw-lx
     distance = round(((-(6/5)*D+268) / 100),2)
@@ -226,14 +233,22 @@ while True:
     
   if len(num) == 0:
     distance = 0
-    doc_ref_drone = db.collection(u'robot').document(u'sky')
-    doc_ref_drone.set({
-    u'Num_of_drone': len(num),
-    u'Distance' : 0.0,
-    u'date' : firestore.SERVER_TIMESTAMP, #date
-    })
+    #doc_ref_drone = db.collection(u'robot').document(u'sky')
+    #doc_ref_drone.set({
+    #u'Num_of_drone': len(num),
+    #u'Distance' : 0.0,
+    #u'date' : firestore.SERVER_TIMESTAMP, #date
+    #})
 
   # 현재 모터의 pulse 값
+  
+  if len(num) != 0:
+      buzzer.on()
+      print('buzzer on')
+  else:
+      buzzer.off()
+      print('buzzer off')
+      
   pulse.append(s.get_panpulse())
   pulse.append(s.get_tiltpulse())
   
@@ -245,6 +260,7 @@ while True:
   Drone_data.append(num)      # 드론으로 예측되는 확률
   Drone_data.append(pulse)    # 모터들의 pulse값
   Drone_data.append(distance) # 드론일 확률이 가장 높은 드론과의 거리
+  
    
   mes = sender.send_image(Drone_data, rpi_name, frame) 
   message = mes.decode()
