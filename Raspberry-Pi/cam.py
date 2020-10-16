@@ -244,10 +244,10 @@ while True:
   
   if len(num) != 0:
       buzzer.on()
-      print('buzzer on')
+      laser.on()
   else:
       buzzer.off()
-      print('buzzer off')
+      laser.off()
       
   pulse.append(s.get_panpulse())
   pulse.append(s.get_tiltpulse())
