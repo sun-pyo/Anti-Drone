@@ -6,7 +6,7 @@
 3. [실행 환경](#개발_환경)
 4. [향후 계획](#향후_계획)
 5. [License](#License)
-6. [Other license](#Other license)
+6. [Other_license](#Other_license)
 -----------------------
 
 ### 프로젝트_설명
@@ -66,7 +66,7 @@
 ### License
 This project is released under the Pyqt5 is GPL v3 licensed, as found in the [LICENSE](LICENSE) file.
 
-### Other license
+### Other_license
 We Notice Other license too.   
 Some code is licensed user a MIT license. Some code is licensed user BSD and Apache licese.   
 and we notice someone's code that we refered.   
