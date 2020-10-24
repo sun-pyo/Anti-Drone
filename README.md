@@ -70,4 +70,4 @@ This project is released under the Pyqt5 is GPL v3 licensed, as found in the [LI
 We Notice Other license too.   
 Some code is licensed user a MIT license. Some code is licensed user BSD and Apache licese.   
 and we notice someone's code that we refered.   
-Check this file [NOTICE](NOTICE)   
+Check this [NOTICE](NOTICE) file. 
