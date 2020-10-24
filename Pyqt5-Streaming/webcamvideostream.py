@@ -7,7 +7,6 @@ import time
 import threading
 import imagezmq
 import numpy as np
-from imutils import build_montages
 from datetime import datetime
 import imutils
 import math

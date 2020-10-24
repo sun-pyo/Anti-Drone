@@ -3,27 +3,41 @@ if (!!window.EventSource) {
   var source = new EventSource("/drone_num");
   source.onmessage = function (e) {
     var jbSplit = e.data.split(",");
+    var total_dnum = 0;
+    var time = new Date();
+    var D = 'Date: ' + time.getFullYear() + '-' + (time.getMonth()+1)+ '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+    $("#timedate").text(D)
     for (var i in jbSplit) {
       $("#cam" + i).text(jbSplit[i]);
-      var time = new Date();
-      var D = 'Date: ' + time.getFullYear() + '-' + (time.getMonth()+1)+ '-' + time.getDate() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
-      $("#timedate").text(D)
       var j = jbSplit[i].split(":");
-      parseInt(j[1]);
-      if (j[1] != 0) {
+      var k = parseInt(j[1]);
+      if (k != 0) {
+        total_dnum += k;
         var img = document.getElementById("video" + i);
         img.style.borderColor = "#ffff00";
       } else {
         var img = document.getElementById("video" + i);
         img.style.borderColor = "#ffffff";
-      }
+      }  
     }
+    // if(total_dnum != 0)
+    // {
+    //   var audio = new Audio("../alert_sound.mp3");
+    //   audio.play();    
+    // }
+
+    //if(total_dnum == 0){
+    //     Warning.pause();
+    //     Warning.loop = true;
+    // }
+    // else
+    //     Warning.play();
+      
   };
 }
 
 
 $(document).ready(function (e){
-
   $(document).on("click",".cam_video",function(){
           var scrollTop = $(window).scrollTop();
           //$('html').scrollTop(1200);      // 스크롤 위로
@@ -63,6 +77,10 @@ $(document).ready(function (e){
               });
             }
             else if(event.keyCode == 32){      //스페이스바
+              alert('hi');
+              var audio = new Audio("/static/alert_sound.mp3");
+              audio.play();
+              alert('play');  
               $.ajax({
                 url:'/C/'+ cam
               });
