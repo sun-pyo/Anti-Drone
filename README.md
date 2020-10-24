@@ -5,6 +5,8 @@
 2. [프로젝트 구조](#프로젝트_구조)
 3. [실행 환경](#개발_환경)
 4. [향후 계획](#향후_계획)
+5. [License](#License)
+6. [Other license](#Other license)
 -----------------------
 
 ### 프로젝트_설명
@@ -60,3 +62,15 @@
 >* 2D 레이더 맵 구현
 >* 수동 조작 GUI 구현
 >* 새로운 3D 모델 뽑아서 적용하기
+
+### License
+This project is released under the Pyqt5 is GPL v3 licensed, as found in the [LICENSE](LICENSE) file.
+
+### Other license
+We Notice Other license too.
+
+Some code is licensed user a MIT license. Some code is licensed user BSD and Apache licese.
+
+and we notice someone's code that we refered
+
+Check this file [Other license](Other license)
