@@ -43,6 +43,11 @@ last_epoch = 0
 @basic_auth.required
 def index():
     return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
         
 def cam(cam_index):
     while True:
