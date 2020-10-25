@@ -16,6 +16,9 @@ from fcm import fcm
 class WebcamVideoStream:
 
     imageHub = imagezmq.ImageHub('tcp://*:5555')
+    send_address = 0
+    sender = None
+    Capture_Time = 10
 
     def __init__(self):
         print("init")
@@ -56,6 +59,12 @@ class WebcamVideoStream:
         'cam3':['cam2', 'cam4'],
         'cam4':['cam3', 'None']    
     }
+    Lastcapture_Time = {
+        'cam1' : datetime.now(),
+        'cam2' : datetime.now(),
+        'cam3' : datetime.now(),
+        'cam4' : datetime.now() 
+    } 
 
     # 각각의 라즈베리파이를 수동 컨트롤 하기 위함
     Control_Dict = {
@@ -122,6 +131,7 @@ class WebcamVideoStream:
                 self.Dnum_Dcit[self.rpiName] = int(self.Dronedata_Dict[self.rpiName][0])
             self.Dronedata_Dict[self.rpiName] = self.Dronedata
             self.Send_fcm(self.rpiName)
+            self.send_frame(self.rpiName)
 
             if self.rpiName not in self.lastActive.keys():
                 print("[INFO] receiving data from {}...".format(self.rpiName))
@@ -147,14 +157,14 @@ class WebcamVideoStream:
                         self.Dronedata_Dict.pop(rpiName)
                 self.lastActiveCheck = datetime.now()
 
-
-
-    # index 0 : drone number, index 1 : ymin, index 2 : xmin, index 3: ymax, index 4 : xmax
-    # index 5 : score, index 6 : pulse(pan, tilt), index 7 : distance
+    
     def Send_fcm(self, name):
         if name in self.Dronedata_Dict:
             if int(self.Dronedata_Dict[name][0]) != self.Dnum_Dcit[name]:
-                self.fcm1.sendMessage()
+                t = Thread(target=self.fcm1.sendMessage, args=())
+                t.daemon = True
+                t.start()
+                
 
     # Auto_mode일 때 드론을 컨트롤하는 문자를 바꿔주는 함수
     # 자신의 왼쪽, 오른쪽 라즈베리파이를 비교하여 드론이 발견된 방향으로 회전하라는 문자로 바꿈
@@ -294,19 +304,26 @@ class WebcamVideoStream:
             return 0
 
     # 실질적인 이미지 전송
-    def send(self, name, address):
+    @classmethod
+    def send(cls, name):
         print('send img', name)
-        sender = imagezmq.ImageSender("tcp://{}:5001".format(address))
-        mem = sender.send_image(list(self.Dronedata_Dict[name]),name, self.frameDict[name])
+        mem = cls.sender.send_image(list(cls.Dronedata_Dict[name]), name, cls.frameDict[name])
     
     # 해당하는 라즈베리파이의 이미지와 모델에서 출력한 드론 위치 정보를 이미지 저장하는 컴퓨터로 전송
     @classmethod
-    def send_frame(cls, name, address):
-        if name in cls.frameDict:
-            print('send img')
-            t = Thread(target=cls.send, args=(cls, name, address))
-            t.daemon = True
-            t.start()
+    def send_frame(cls, name):
+        if name in cls.Dronedata_Dict:
+            if int(cls.Dronedata_Dict[name][0]) > 0 and (datetime.now() - cls.Lastcapture_Time[name]).seconds > cls.Capture_Time: 
+                print('send img')
+                t = Thread(target=WebcamVideoStream.send, args=(name,))
+                t.daemon = True
+                t.start()
+                cls.Lastcapture_Time[name] = datetime.now()     
+
+    @classmethod
+    def set_address(cls, address):
+        cls.send_address = address
+        cls.sender = imagezmq.ImageSender("tcp://{}:5001".format(cls.send_address))
 
 
     # AutoMode 변경 

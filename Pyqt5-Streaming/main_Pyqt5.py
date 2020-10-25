@@ -22,6 +22,7 @@ class Window(QWidget):
         self.setWindowTitle("A.I. Anti-Drone Security Feed")
         self.resize(self.Window_width, self.Window_height)
         self.setStyleSheet("background-color: #F5F5F5;") 
+        WebcamVideoStream.set_address(args.save_server)
         self.initUI()
 
     def initUI(self):
@@ -200,7 +201,7 @@ class Window(QWidget):
     # 이미지 저장 서버로 이미지 전송
     def Save_img(self, cam):
         if args.save_server != 0:
-            self.stream.send_frame(cam, args.save_server)
+            self.stream.send_frame(cam)
 
     # 종료창 클릭 이벤트
     def closeEvent(self, QCloseEvent):    
