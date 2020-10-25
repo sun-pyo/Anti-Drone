@@ -26,6 +26,9 @@ parser.add_argument("-s", "--save_server", required=True,
     help="ip address of the save_server to which the client will connect")
 args = parser.parse_args()
 
+
+WebcamVideoStream.set_address(args.save_server)
+
 app = Flask(__name__)
 app.config['BASIC_AUTH_USERNAME'] = 'pi'
 app.config['BASIC_AUTH_PASSWORD'] = 'pi'
@@ -88,10 +91,10 @@ def drone_num():
     return redirect(url_for('static', filename='index.html'))
 
 
-@app.route('/send_img/<string:cam>')
-def send_img(cam):
-    WebcamVideoStream.send_frame(cam, args.save_server)
-    return '', 204
+# @app.route('/send_img/<string:cam>')
+# def send_img(cam):
+#     WebcamVideoStream.send_frame(cam)
+#     return '', 204
 
     
 @app.route('/R/<string:cam>')
