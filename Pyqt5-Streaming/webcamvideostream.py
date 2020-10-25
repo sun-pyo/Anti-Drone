@@ -10,13 +10,18 @@ import numpy as np
 from datetime import datetime
 import imutils
 import math
+from fcm import fcm
 
 
 class WebcamVideoStream:
+
+    imageHub = imagezmq.ImageHub('tcp://*:5555')
+
     def __init__(self):
         print("init")
+
+        self.fcm1 = fcm("dM4Tyq6_QiaWGRT3rvgMx5:APA91bERqNtgqXwNeuRUCM7ZryDSVZGbAxhKQVuMnBw0V6y4482TZJD0Kw9XCASEUGQu3D-Q0LNVciZ73vQpm2Cd9Jt6HEM-hp51b0dkmZ2je0eIlw5WaQf10tjXpxezHB0twkD00GP8")
         # 이미지 허브 새성
-        self.imageHub = imagezmq.ImageHub('tcp://*:5555')
         self.lastActive = {}
 
         self.lastActiveCheck = datetime.now()
@@ -24,8 +29,8 @@ class WebcamVideoStream:
         self.ACTIVE_CHECK_PERIOD = 10
         self.ACTIVE_CHECK_SECONDS = self.ESTIMATED_NUM_PIS * self.ACTIVE_CHECK_PERIOD
 
-        self.mW = 2
-        self.mH = 2
+        #self.mW = 2
+        #self.mH = 2
         self.w = 0
         self.h = 0
 
@@ -79,7 +84,7 @@ class WebcamVideoStream:
     # index 0 : drone number, index 1 : ymin, index 2 : xmin, index 3: ymax, index 4 : xmax
     # index 5 : score, index 6 : pulse(pan, tilt), index 7 : distance
     Dronedata_Dict = {}
-
+    Dnum_Dcit = {}
     # 각각의 라즈베리파이별 Frame 따로 관리  
     frameDict = {}
     
@@ -100,17 +105,23 @@ class WebcamVideoStream:
             (self.Dronedata, self.rpiName, self.frame) = self.imageHub.recv_image()
 
             # Auto_mode에 맞는 모터 컨트롤 문자로 응답(Res)  
-            if self.Auto_mode == True:
-                self.Control_Dict[self.rpiName] = self.Control_Cam(self.rpiName)
-                self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
-            elif self.Control_Dict[self.rpiName] != 'None':
-                self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
-                self.Control_Dict[self.rpiName] = 'None'
-            else:
-                self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+            # if self.Auto_mode == True:
+            #     self.Control_Dict[self.rpiName] = self.Control_Cam(self.rpiName)
+            #     self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+            # elif self.Control_Dict[self.rpiName] != 'None':
+            #     self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+            #     self.Control_Dict[self.rpiName] = 'None'
+            # else:
+            #     self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+            self.imageHub.send_reply('True 0 0'.encode())
 
-            # Dronedata를 각 라즈베리파이 따로 관리, 업데이트 
+            # Dronedata를 각 라즈베리파이 따로 관리, 업데이트
+            if self.rpiName not in self.Dronedata_Dict:
+                self.Dnum_Dcit[self.rpiName] = 0
+            else:    
+                self.Dnum_Dcit[self.rpiName] = int(self.Dronedata_Dict[self.rpiName][0])
             self.Dronedata_Dict[self.rpiName] = self.Dronedata
+            self.Send_fcm(self.rpiName)
 
             if self.rpiName not in self.lastActive.keys():
                 print("[INFO] receiving data from {}...".format(self.rpiName))
@@ -135,6 +146,15 @@ class WebcamVideoStream:
                         self.frameDict.pop(rpiName)
                         self.Dronedata_Dict.pop(rpiName)
                 self.lastActiveCheck = datetime.now()
+
+
+
+    # index 0 : drone number, index 1 : ymin, index 2 : xmin, index 3: ymax, index 4 : xmax
+    # index 5 : score, index 6 : pulse(pan, tilt), index 7 : distance
+    def Send_fcm(self, name):
+        if name in self.Dronedata_Dict:
+            if int(self.Dronedata_Dict[name][0]) != self.Dnum_Dcit[name]:
+                self.fcm1.sendMessage()
 
     # Auto_mode일 때 드론을 컨트롤하는 문자를 바꿔주는 함수
     # 자신의 왼쪽, 오른쪽 라즈베리파이를 비교하여 드론이 발견된 방향으로 회전하라는 문자로 바꿈
