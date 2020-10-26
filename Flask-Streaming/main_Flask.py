@@ -65,6 +65,7 @@ def video_feed(idx):
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+
 def radar():
     while True:
         radar_frame = WebcamVideoStream.Radar_map()

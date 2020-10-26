@@ -44,10 +44,10 @@ $(document).ready(function (e){
           $(".bigPictureWrapper").css('top', scrollTop);
           //$('html').animate({scrollTop : offset.top}, 2400);
           $("body").css("overflow", "hidden");  // 스크롤 숨기기
-          var path = $(this).attr('src')
-          var c = $(this).attr('class')
-          var cam = c.split(' ')[1]
-          showImage(path, cam)
+          var path = $(this).attr('src');
+          var c = $(this).attr('class');
+          var cam = c.split(' ')[1];
+          showImage(path, cam);
 
           
           window.onkeydown = function(){
@@ -77,10 +77,6 @@ $(document).ready(function (e){
               });
             }
             else if(event.keyCode == 32){      //스페이스바
-              alert('hi');
-              var audio = new Audio("/static/alert_sound.mp3");
-              audio.play();
-              alert('play');  
               $.ajax({
                 url:'/C/'+ cam
               });
@@ -94,11 +90,14 @@ $(document).ready(function (e){
       
   function showImage(fileCallPath, cam){
       $(".bigPictureWrapper").css("display","flex").show();
-      $(".bigPicture")
-      .html("<img src='"+fileCallPath+"' >");
-  }
+      $(".bigPicture").html("<img src='"+fileCallPath+"' >");
+      var radar= '/Radar_map'
+      $("#radar").html("<img src='"+radar+"' >");
+    }
       
   $(".bigPicture").on("click", function(e){
+      //$('#radar').removeAttr('src');
+      //$("#radar").empty();
       $("body").css("overflow", "scroll");
       setTimeout(function(){
       $('.bigPictureWrapper').hide();

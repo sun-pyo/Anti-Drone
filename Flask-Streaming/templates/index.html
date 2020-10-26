@@ -105,7 +105,7 @@
                         <h2 class="text-white mt-0">Anti-Drone의 개념</h2>
                         <hr class="divider light my-4" />
                         <p class="text-white-50 mb-4">계속해서 발전하는 드론에 대해 방어체계를 구축한 새로운 기술 시스템입니다. </p>
-                        <a class="btn btn-light btn-xl js-scroll-trigger" href="about">자세히 보러가기</a>
+                        <a class="btn btn-light btn-xl" href="{{ url_for('about') }}" onclick="$('.cam_video').removeAttr('src');">자세히 보러가기</a>
                     </div>
                 </div>
             </div>
@@ -116,9 +116,11 @@
             <div class="container-fluid p-0">
                 <div class="row no-gutters">
                     <div class="row">
+                    
         <div class="col-lg-4 col-md-4">
           <img  class="cam_video cam1" id='video0' src="{{ url_for('video_feed', idx = 1)}}">
           <img  class="cam_video cam2" id='video1' src="{{ url_for('video_feed', idx = 2)}}">
+        
         </div>
 
         <div class="col-lg-4 col-md-4">
@@ -132,8 +134,9 @@
           <h3 id="cam2"></h3>
           <h3 id="cam3"></h3>
           <h3 id="timedate">Date:</h3>
-
+ 
           <img class="cam_video" id = "radar" src="{{ url_for('Radar_map')}}">
+    
         </div>
                     </div>
                 </div>
@@ -176,8 +179,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
         <!-- Core theme JS-->
         <script src="{{url_for('static', filename = 'js/scripts.js')}}"></script>
-        <div class="bigPictureWrapper">                                             <!--큰화면 요소들입니다.-->                      
-      <div class="bigPicture"></div>     
+    <div class="bigPictureWrapper">                                             <!--큰화면 요소들입니다.-->                      
+      <div class="bigPicture"></div>  
+                <!--<div id = "radar"></div>-->
+        <!--
         <div class="col-md-4" style="width:250px; height:500px; float:right,top">
           <label class="switch">
             <input type="checkbox">
@@ -191,7 +196,7 @@
           <a href="#" class="key Enter" id="enter"><span>Enter</span></a><span class = "exp">사진 저장</span><br>
           <a href="#" class="key space" id="space"><span>space</span></a><span class = "exp">원점으로 돌아가기</span>
         </div><br>
-      </div>   
+        --> 
     </div>
     </body>
 </html>
