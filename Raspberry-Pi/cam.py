@@ -52,12 +52,12 @@ resW, resH = args.resolution.split('x')
 imW, imH = int(resW), int(resH)
 use_TPU = args.edgetpu
 
-#cred = credentials.Certificate('drone-detection-js-firebase-adminsdk-4xh9r-3ba93b9ccd.json')
+cred = credentials.Certificate('drone-detection-js-firebase-adminsdk-4xh9r-3ba93b9ccd.json')
 # Initialize the app with a service account, granting admin privileges
 
-#cred = credentials.Certificate('firestore-1add2-firebase-adminsdk-7vjg4-6c20413010.json')
-#firebase_admin.initialize_app(cred)
-#db = firestore.client()
+cred = credentials.Certificate('firestore-1add2-firebase-adminsdk-7vjg4-6c20413010.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 
 # Import TensorFlow libraries
@@ -204,13 +204,14 @@ while True:
     y_medium = int((ly+lh)/2)
     Last_time = datetime.now()
 
-    # 드론 개수와 거리, 현재 시간을 firebase에 기록 
-    #doc_ref_drone = db.collection(u'robot').document(u'sky')
-    #doc_ref_drone.set({
-    #u'Num_of_drone': len(num),
-    #u'Distance' : distance,
-    #u'date' : firestore.SERVER_TIMESTAMP, #date
-    #})
+    if dnum != len(num):
+        dnum = len(num)
+        doc_ref_drone = db.collection(u'{}'.format(rpi_name)).document(u'sky')
+        doc_ref_drone.set({
+        u'Num_of_drone': len(num),
+        u'Distance' : distance,
+        u'date' : firestore.SERVER_TIMESTAMP, #date
+        })
 
     D = lw-lx
     distance = round(((-(6/5)*D+268) / 100),2)
@@ -233,12 +234,15 @@ while True:
     
   if len(num) == 0:
     distance = 0
-    #doc_ref_drone = db.collection(u'robot').document(u'sky')
-    #doc_ref_drone.set({
-    #u'Num_of_drone': len(num),
-    #u'Distance' : 0.0,
-    #u'date' : firestore.SERVER_TIMESTAMP, #date
-    #})
+    
+    if dnum != len(num):
+        dnum = len(num)
+        doc_ref_drone = db.collection(u'{}'.format(rpi_name)).document(u'sky')
+        doc_ref_drone.set({
+        u'Num_of_drone': len(num),
+        u'Distance' : 0.0,
+        u'date' : firestore.SERVER_TIMESTAMP, #date
+        })
 
   # 현재 모터의 pulse 값
   
