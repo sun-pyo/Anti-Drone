@@ -36,6 +36,13 @@ if (!!window.EventSource) {
   };
 }
 
+window.onload=function(){
+    $("#video0").attr('src', '/video_feed/1');
+    $("#video1").attr('src', '/video_feed/2');
+    $("#video2").attr('src', '/video_feed/3');
+    $("#video3").attr('src', '/video_feed/4');
+  }
+
 
 $(document).ready(function (e){
   $(document).on("click",".cam_video",function(){

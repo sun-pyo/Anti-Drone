@@ -307,12 +307,13 @@ class WebcamVideoStream:
     @classmethod
     def send(cls, name):
         print('send img', name)
+        #mem = cls.sender.send_image(0, name, cls.frameDict[name])
         mem = cls.sender.send_image(list(cls.Dronedata_Dict[name]), name, cls.frameDict[name])
-    
+
     # 해당하는 라즈베리파이의 이미지와 모델에서 출력한 드론 위치 정보를 이미지 저장하는 컴퓨터로 전송
     @classmethod
     def send_frame(cls, name):
-        if name in cls.Dronedata_Dict:
+        if name in cls.Dronedata_Dict and cls.sender != None:
             if int(cls.Dronedata_Dict[name][0]) > 0 and (datetime.now() - cls.Lastcapture_Time[name]).seconds > cls.Capture_Time: 
                 print('send img')
                 t = Thread(target=WebcamVideoStream.send, args=(name,))
@@ -322,8 +323,9 @@ class WebcamVideoStream:
 
     @classmethod
     def set_address(cls, address):
-        cls.send_address = address
-        cls.sender = imagezmq.ImageSender("tcp://{}:5001".format(cls.send_address))
+        if address != 0:
+            cls.send_address = address
+            cls.sender = imagezmq.ImageSender("tcp://{}:5001".format(cls.send_address))
 
 
     # AutoMode 변경 
