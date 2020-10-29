@@ -57,41 +57,41 @@ $(document).ready(function (e){
           showImage(path, cam);
 
           
-          window.onkeydown = function(){
-            if(event.keyCode == 13){           //엔터키
-              $.ajax({
-                url:'/send_img'
-              });
-            }
-            else if(event.keyCode == 37){      //좌
-              $.ajax({
-                url:'/L/'+ cam
-              });
-            }
-            else if(event.keyCode == 38){      //상
-              $.ajax({
-                url:'/U/'+ cam
-              });
-            }
-            else if(event.keyCode == 39){      //우
-              $.ajax({
-                url:'/R/'+ cam
-              });
-            }
-            else if(event.keyCode == 40){      //하
-              $.ajax({
-                url:'/D/'+ cam
-              });
-            }
-            else if(event.keyCode == 32){      //스페이스바
-              $.ajax({
-                url:'/C/'+ cam
-              });
-            }
-          }
-          window.onkeyup = function(){
-            event.keyCode = 9;
-          }
+          // window.onkeydown = function(){
+          //   if(event.keyCode == 13){           //엔터키
+          //     $.ajax({
+          //       url:'/send_img'
+          //     });
+          //   }
+          //   else if(event.keyCode == 37){      //좌
+          //     $.ajax({
+          //       url:'/L/'+ cam
+          //     });
+          //   }
+          //   else if(event.keyCode == 38){      //상
+          //     $.ajax({
+          //       url:'/U/'+ cam
+          //     });
+          //   }
+          //   else if(event.keyCode == 39){      //우
+          //     $.ajax({
+          //       url:'/R/'+ cam
+          //     });
+          //   }
+          //   else if(event.keyCode == 40){      //하
+          //     $.ajax({
+          //       url:'/D/'+ cam
+          //     });
+          //   }
+          //   else if(event.keyCode == 32){      //스페이스바
+          //     $.ajax({
+          //       url:'/C/'+ cam
+          //     });
+          //   }
+          // }
+          // window.onkeyup = function(){
+          //   event.keyCode = 9;
+          // }
           
     });//end click event
       

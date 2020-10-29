@@ -64,8 +64,6 @@ def video_feed(idx):
     return Response(cam(idx),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
-
 def radar():
     while True:
         radar_frame = WebcamVideoStream.Radar_map()
@@ -103,37 +101,37 @@ def drone_num():
 #     return '', 204
 
     
-@app.route('/R/<string:cam>')
-def R(cam):
-    print(cam)
-    WebcamVideoStream.move_Right(cam)
-    return '', 204
+# @app.route('/R/<string:cam>')
+# def R(cam):
+#     print(cam)
+#     WebcamVideoStream.move_Right(cam)
+#     return '', 204
 
-@app.route('/L/<string:cam>')
-def L(cam):
-    WebcamVideoStream.move_Left(cam)
-    return '', 204
+# @app.route('/L/<string:cam>')
+# def L(cam):
+#     WebcamVideoStream.move_Left(cam)
+#     return '', 204
 
-@app.route('/U/<string:cam>')
-def U(cam):
-    WebcamVideoStream.move_Up(cam)
-    return '', 204
+# @app.route('/U/<string:cam>')
+# def U(cam):
+#     WebcamVideoStream.move_Up(cam)
+#     return '', 204
 
-@app.route('/D/<string:cam>')
-def D(cam):
-    WebcamVideoStream.move_Down(cam)
-    return '', 204
+# @app.route('/D/<string:cam>')
+# def D(cam):
+#     WebcamVideoStream.move_Down(cam)
+#     return '', 204
 
-@app.route('/C/<string:cam>')
-def C(cam):
-    WebcamVideoStream.move_Init(cam)
-    return '', 204
+# @app.route('/C/<string:cam>')
+# def C(cam):
+#     WebcamVideoStream.move_Init(cam)
+#     return '', 204
 
-@app.route('/mode_change')
-def mode_change():
-    print('Auto')
-    WebcamVideoStream.AutoMode_Flag()
-    return '', 204
+# @app.route('/mode_change')
+# def mode_change():
+#     print('Auto')
+#     WebcamVideoStream.AutoMode_Flag()
+#     return '', 204
 
 
 if __name__ == '__main__':
