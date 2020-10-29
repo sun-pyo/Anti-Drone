@@ -13,19 +13,19 @@ import imagezmq
 parser = argparse.ArgumentParser()
 parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                     default=0.9)
-parser.add_argument('--savedir', help='Name of the xml folder containing images xml.',
-                    default='save')
+#parser.add_argument('--savedir', help='Name of the xml folder containing images xml.',
+#                    default='save')
 
 args = parser.parse_args()
 min_conf_threshold = float(args.threshold)
 
 
-SU_DIR = args.savedir
+#SU_DIR = args.savedir
 CWD_PATH = os.getcwd()
     
-if SU_DIR:
-    PATH_TO_SUCCESS = os.path.join(CWD_PATH,SU_DIR)
-    successfolder = glob.glob(PATH_TO_SUCCESS)[0]
+#if SU_DIR:
+#    PATH_TO_SUCCESS = os.path.join(CWD_PATH,SU_DIR)
+#    successfolder = glob.glob(PATH_TO_SUCCESS)[0]
 
 
 imageHub = imagezmq.ImageHub('tcp://*:5001')
@@ -37,6 +37,8 @@ while True:
 
     (Drone_data, CamName, frame) = imageHub.recv_image()
     imageHub.send_reply(b'OK')
+    successfolder = os.path.join(CWD_PATH,CamName)
+    os.makedirs(successfolder, exist_ok=True)
 
     # ex) 2020-08-20-2-40-cam1.jpg 와 같은 형식으로 저장
     filename2 = str(date) + '-' +str(CamName)
@@ -44,8 +46,6 @@ while True:
     print('---------------------------------start--------------------------------------------------')
     print('image file name',filename)
     print('image file name',filename2)
-
-    cv2.imwrite(successfolder+'/'+filename,frame)
 
     scores = list(map(float, Drone_data[5])) # float형 리스트로 변환
     ymin = []
@@ -83,6 +83,7 @@ while True:
             f.write('\t\t</bndbox>\n\t</object>\n')
         f.write('</annotation>')
         #time.sleep(0.1)
+        cv2.imwrite(successfolder+'/'+filename,frame)
         f.close()
         print('createXML')
     

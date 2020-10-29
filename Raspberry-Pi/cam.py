@@ -255,7 +255,7 @@ while True:
       buzzer.off()
       laser.off()
       led.off()
-      
+
   pulse.append(s.get_panpulse())
   pulse.append(s.get_tiltpulse())
   
@@ -288,7 +288,7 @@ while True:
           s.reset()
   # 자동모드, 정해진 시간동안 드론이 없었을 경우 (2초) 
   elif Auto_flag == True and (datetime.now() - Last_time).seconds > No_Drone_Time:
-      s.set_pulse(message[1], message[2])
+      s.reset()
 
 
   # Calculate framerate
