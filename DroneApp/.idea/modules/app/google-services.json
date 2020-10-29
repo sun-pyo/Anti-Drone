@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "56806206440",
+    "firebase_url": "https://droneapp-6424b.firebaseio.com",
+    "project_id": "droneapp-6424b",
+    "storage_bucket": "droneapp-6424b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56806206440:android:16183f22bf5163f513925d",
+        "android_client_info": {
+          "package_name": "com.example.droneapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56806206440-8p7uf0ba4tedlfpb1go6h7ad7jb1rj6j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.droneapp",
+            "certificate_hash": "66ea662b8cc338f77a155c6b10c3001d1ce5c34f"
+          }
+        },
+        {
+          "client_id": "56806206440-m1in83bkoqvhca65m37cvc7d76gk8kiu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnFZnQ4nGgjN4G6-lA0dBy1w48sATs8dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56806206440-m1in83bkoqvhca65m37cvc7d76gk8kiu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
