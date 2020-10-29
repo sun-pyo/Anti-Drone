@@ -145,6 +145,7 @@ pulse = []
 buzzer = Buzzer(17)
 buzzer.off()
 laser = Digital_Controller(12)
+led = Digital_Controller(23)
 
 sender = imagezmq.ImageSender(connect_to="tcp://{}:5555".format(args.server))
 rpi_name = socket.gethostname() # 각 라즈베리파이의 hostname을 cam1 ~ cam4로 설정해둠 
@@ -249,9 +250,11 @@ while True:
   if len(num) != 0:
       buzzer.on()
       laser.on()
+      led.on()
   else:
       buzzer.off()
       laser.off()
+      led.off()
       
   pulse.append(s.get_panpulse())
   pulse.append(s.get_tiltpulse())
