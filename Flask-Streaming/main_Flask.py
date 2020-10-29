@@ -22,7 +22,7 @@ import argparse
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--save_server", required=True,
+parser.add_argument("-s", "--save_server", required=False,
     help="ip address of the save_server to which the client will connect",default=0)
 args = parser.parse_args()
 

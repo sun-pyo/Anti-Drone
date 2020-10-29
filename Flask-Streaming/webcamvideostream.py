@@ -308,7 +308,12 @@ class WebcamVideoStream:
     def send(cls, name):
         print('send img', name)
         #mem = cls.sender.send_image(0, name, cls.frameDict[name])
-        mem = cls.sender.send_image(list(cls.Dronedata_Dict[name]), name, cls.frameDict[name])
+        try:
+            mem = cls.sender.send_image(list(cls.Dronedata_Dict[name]), name, cls.frameDict[name])
+        except Exception as e: 
+            message = "Exception({0}): {1}".format(e.errno, e.strerror)
+            print(message)
+            pass 
 
     # 해당하는 라즈베리파이의 이미지와 모델에서 출력한 드론 위치 정보를 이미지 저장하는 컴퓨터로 전송
     @classmethod
