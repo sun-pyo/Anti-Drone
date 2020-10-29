@@ -122,8 +122,9 @@ def save_():
 
         (_, CamName, image) = imageHub.recv_image()
         imageHub.send_reply(b'OK')
-        imH, imW, _ = image.shape 
         image_resized = cv2.resize(image, (300, 300))
+        imH, imW, _ = image_resized.shape 
+        
 
         input_data = np.expand_dims(image_resized, axis=0)
         print(np.shape(input_data))
