@@ -1,0 +1,26 @@
+<annotation>
+	<folder>D:\Google(sunpyu@hansung.ac.kr)\anti_drone\Anti-Drone\Save-Image\cam4</folder>
+	<filename>cam4-2020-11-04-03-46-09.jpg</filename>
+<path>cam4-2020-11-04-03-46-09.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>300</width>
+		<height>300</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Drone</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>239</xmin>
+			<ymin>134</ymin>
+			<xmax>290</xmax>
+			<ymax>153</ymax>
+		</bndbox>
+	</object>
+</annotation>

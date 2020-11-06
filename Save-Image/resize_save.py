@@ -113,6 +113,10 @@ def save_():
     input_mean = 127.5
     input_std = 127.5
 
+    
+    imagefolder = os.path.join(CWD_PATH,"img")
+    os.makedirs(imagefolder, exist_ok=True)
+    
     # Loop over every image and perform detection
     while True:
         start_time = time.time()
@@ -132,7 +136,7 @@ def save_():
         successfolder = os.path.join(CWD_PATH,CamName)
         os.makedirs(successfolder, exist_ok=True)
 
-        filename2 = str(date) + '-' +str(CamName)
+        filename2 = str(CamName) + '-' + str(date)
         filename = filename2 + '.jpg'
         print('---------------------------------start--------------------------------------------------')
         print('image file name',filename2)
@@ -178,6 +182,7 @@ def save_():
         
         
         if len(num) == 0:
+            cv2.imwrite(imagefolder+'/'+filename, image_resized)
             print('fail------------------')
             
         if len(num) !=0:
@@ -200,8 +205,8 @@ def save_():
             f.write('</annotation>')
             f.close()
             print('createXML')
-
-        cv2.imwrite(successfolder+'/'+filename, image_resized)
+            cv2.imwrite(successfolder+'/'+filename, image_resized)
+            
         end_time = time.time()
         process_time = end_time - start_time
         print("======== A frame took {:.3f} seconds=================".format(process_time))

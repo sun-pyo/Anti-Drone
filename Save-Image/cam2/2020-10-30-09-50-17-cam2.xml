@@ -1,0 +1,38 @@
+<annotation>
+	<folder>D:\Google(sunpyu@hansung.ac.kr)\anti_drone\Anti-Drone\Save-Image\cam2</folder>
+	<filename>2020-10-30-09-50-17-cam2.jpg</filename>
+<path>2020-10-30-09-50-17-cam2.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>300</width>
+		<height>300</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Drone</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>90</xmin>
+			<ymin>67</ymin>
+			<xmax>143</xmax>
+			<ymax>136</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Drone</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>100</xmin>
+			<ymin>59</ymin>
+			<xmax>148</xmax>
+			<ymax>84</ymax>
+		</bndbox>
+	</object>
+</annotation>

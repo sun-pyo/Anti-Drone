@@ -205,14 +205,14 @@ while True:
     y_medium = int((ly+lh)/2)
     Last_time = datetime.now()
 
-    if dnum != len(num):
-        dnum = len(num)
-        doc_ref_drone = db.collection(u'{}'.format(rpi_name)).document(u'sky')
-        doc_ref_drone.set({
-        u'Num_of_drone': len(num),
-        u'Distance' : distance,
-        u'date' : firestore.SERVER_TIMESTAMP, #date
-        })
+   # if dnum != len(num):
+   #     dnum = len(num)
+   #     doc_ref_drone = db.collection(u'{}'.format(rpi_name)).document(u'sky')
+   #     doc_ref_drone.set({
+   #     u'Num_of_drone': len(num),
+   #     u'Distance' : distance,
+   #     u'date' : firestore.SERVER_TIMESTAMP, #date
+   #     })
 
     D = lw-lx
     distance = round(((-(6/5)*D+268) / 100),2)
@@ -236,14 +236,14 @@ while True:
   if len(num) == 0:
     distance = 0
     
-    if dnum != len(num):
-        dnum = len(num)
-        doc_ref_drone = db.collection(u'{}'.format(rpi_name)).document(u'sky')
-        doc_ref_drone.set({
-        u'Num_of_drone': len(num),
-        u'Distance' : 0.0,
-        u'date' : firestore.SERVER_TIMESTAMP, #date
-        })
+   # if dnum != len(num):
+   #     dnum = len(num)
+   #     doc_ref_drone = db.collection(u'{}'.format(rpi_name)).document(u'sky')
+   #     doc_ref_drone.set({
+   #     u'Num_of_drone': len(num),
+   #     u'Distance' : 0.0,
+   #     u'date' : firestore.SERVER_TIMESTAMP, #date
+   #     })
 
   # 현재 모터의 pulse 값
   
@@ -288,7 +288,7 @@ while True:
           s.reset()
   # 자동모드, 정해진 시간동안 드론이 없었을 경우 (2초) 
   elif Auto_flag == True and (datetime.now() - Last_time).seconds > No_Drone_Time:
-      s.reset()
+      s.set_pulse(message[1], message[2])
 
 
   # Calculate framerate

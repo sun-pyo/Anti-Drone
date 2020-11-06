@@ -48,7 +48,7 @@ class ServoMotor():
         print(self.panpulse)
         if self.panpulse < self.pan_min:
             self.panpulse = self.pan_min
-    
+        
     # 정지
     def stop(self):
         self.pwm.set_pwm(0, 0, 0)
@@ -64,6 +64,7 @@ class ServoMotor():
         print(self.tiltpulse)
         if self.tiltpulse < self.tilt_min:
             self.tiltpulse = self.tilt_min
+        
     # 아래로 회전
     def down(self):
         self.tiltpulse += 6
@@ -94,10 +95,20 @@ class ServoMotor():
             self.reset()
             return
         
-        if self.tiltpulse < tilt:
+        if self.tiltpulse < int(tilt):
             self.tiltpulse += 10
         else:
             self.tiltpulse -= 10
+
+        if self.panpulse > self.pan_max:
+            self.panpulse = self.pan_max
+        elif self.panpulse < self.pan_min:
+                self.panpulse = self.pan_min
+                
+        if self.tiltpulse < self.tilt_min:
+            self.tiltpulse = self.tilt_min
+        elif self.tiltpulse > self.tilt_max:
+            self.tiltpulse = self.tilt_max
 
         self.pwm.set_pwm(1, 0, self.tiltpulse)
         self.pwm.set_pwm(0, 0, self.panpulse)
