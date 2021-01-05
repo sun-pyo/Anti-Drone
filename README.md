@@ -4,7 +4,7 @@
 1. [프로젝트 설명](#프로젝트_설명)
 2. [프로젝트 구조](#프로젝트_구조)
 3. [실행 환경](#개발_환경)
-4. [시연 예시](#시연_예시) 
+4. [실행 화면](#실행_화면) 
 5. [향후 계획](#향후_계획)
 6. [License](#License)
 7. [Other_license](#Other_license)
@@ -55,12 +55,13 @@
 >    * tensorflow 2.1.0
 
 
-### 시연_예시
->   #### Web 화면
+### 실행_화면
+
+#### Web 
 ![web](img/web.png "web")
->   #### app 화면
+#### app 
 ![app](img/app.PNG "app")
->   #### 로봇
+#### 로봇
 ![rotob](img/robot.jpg)
 
 
