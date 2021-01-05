@@ -58,11 +58,11 @@
 ### 실행_화면
 
 #### Web 
-![web](img/web.png "web")
+![web](img/web.png)
 #### app 
-![app](img/app.PNG "app")
+![App](img/app.PNG)
 #### 로봇
-![rotob](img/robot.jpg)
+![Robot](img/robot.jpg)
 
 
 ### 향후_계획
