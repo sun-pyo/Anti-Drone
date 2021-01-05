@@ -58,10 +58,10 @@
 
 
 ### 향후_계획
->* 발사체 구현(ex 레이저)
->* 2D 레이더 맵 구현
+>* ~~발사체 구현(ex 레이저)~~
+>* ~~2D 레이더 맵 구현~~
 >* 수동 조작 GUI 구현
->* 새로운 3D 모델 뽑아서 적용하기
+>* ~~새로운 3D 모델 뽑아서 적용하기~~
 
 ### License
 This project is released under the Pyqt5 is GPL v3 licensed, as found in the [LICENSE](LICENSE) file.

@@ -114,15 +114,15 @@ class WebcamVideoStream:
             (self.Dronedata, self.rpiName, self.frame) = self.imageHub.recv_image()
 
             # Auto_mode에 맞는 모터 컨트롤 문자로 응답(Res)  
-            # if self.Auto_mode == True:
-            #     self.Control_Dict[self.rpiName] = self.Control_Cam(self.rpiName)
-            #     self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
-            # elif self.Control_Dict[self.rpiName] != 'None':
-            #     self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
-            #     self.Control_Dict[self.rpiName] = 'None'
-            # else:
-            #     self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
-            self.imageHub.send_reply('True 0 0'.encode())
+            if self.Auto_mode == True:
+                self.Control_Dict[self.rpiName] = self.Control_Cam(self.rpiName)
+                self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+            elif self.Control_Dict[self.rpiName] != 'None':
+                self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+                self.Control_Dict[self.rpiName] = 'None'
+            else:
+                self.imageHub.send_reply(self.Control_Dict[self.rpiName].encode())
+            #self.imageHub.send_reply('True 0 0'.encode())
 
             # Dronedata를 각 라즈베리파이 따로 관리, 업데이트
             if self.rpiName not in self.Dronedata_Dict:
@@ -130,8 +130,8 @@ class WebcamVideoStream:
             else:    
                 self.Dnum_Dcit[self.rpiName] = int(self.Dronedata_Dict[self.rpiName][0])
             self.Dronedata_Dict[self.rpiName] = self.Dronedata
-            self.Send_fcm(self.rpiName)
-            self.send_frame(self.rpiName)
+            #self.Send_fcm(self.rpiName)
+            #self.send_frame(self.rpiName)
 
             if self.rpiName not in self.lastActive.keys():
                 print("[INFO] receiving data from {}...".format(self.rpiName))
