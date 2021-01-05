@@ -59,9 +59,9 @@
 
 #### Web 
 ![web](img/web.png)
-#### app 
+#### App 
 ![App](img/app.PNG)
-#### 로봇
+#### Robot
 ![Robot](img/robot.jpg)
 
 
