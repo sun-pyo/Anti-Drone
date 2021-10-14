@@ -15,6 +15,7 @@ from fcm import fcm
 
 class WebcamVideoStream:
 
+    # 이미지 허브 새성
     imageHub = imagezmq.ImageHub('tcp://*:5555')
     send_address = 0
     sender = None
@@ -24,7 +25,6 @@ class WebcamVideoStream:
         print("init")
 
         self.fcm1 = fcm("dM4Tyq6_QiaWGRT3rvgMx5:APA91bERqNtgqXwNeuRUCM7ZryDSVZGbAxhKQVuMnBw0V6y4482TZJD0Kw9XCASEUGQu3D-Q0LNVciZ73vQpm2Cd9Jt6HEM-hp51b0dkmZ2je0eIlw5WaQf10tjXpxezHB0twkD00GP8")
-        # 이미지 허브 새성
         self.lastActive = {}
 
         self.lastActiveCheck = datetime.now()
@@ -32,13 +32,11 @@ class WebcamVideoStream:
         self.ACTIVE_CHECK_PERIOD = 10
         self.ACTIVE_CHECK_SECONDS = self.ESTIMATED_NUM_PIS * self.ACTIVE_CHECK_PERIOD
 
-        #self.mW = 2
-        #self.mH = 2
         self.w = 0
         self.h = 0
 
         self.Dronedata = []
-        self.rpiName = None 
+        self.rpiName = None
         self.frame = cv2.imread('no_signal.jpg')
         self.frame = imutils.resize(self.frame, width=400)
         self.stopped = False
@@ -59,20 +57,10 @@ class WebcamVideoStream:
         'cam3':['cam2', 'cam4'],
         'cam4':['cam3', 'None']    
     }
-    Lastcapture_Time = {
-        'cam1' : datetime.now(),
-        'cam2' : datetime.now(),
-        'cam3' : datetime.now(),
-        'cam4' : datetime.now() 
-    } 
+    Lastcapture_Time = { cam : datetime.now() for cam in camList} 
 
-    # 각각의 라즈베리파이를 수동 컨트롤 하기 위함
-    Control_Dict = {
-        'cam1':'None',
-        'cam2':'None',
-        'cam3':'None',
-        'cam4':'None'
-    }
+    # 각각의 라즈베리파이를 수동 컨트롤 하기 위한 딕셔너리
+    Control_Dict = { cam : 'None' for cam in camList} 
 
     # 카메라 고정 위치
     Start_Point_Dict = {
@@ -82,13 +70,8 @@ class WebcamVideoStream:
         'cam4':(400,250),
     }
 
-    # 초기 기준 각도   3시 방향 부터 0도, 12시 방향 90도, 9시 180도, 6시 270도
-    Angle_dict = {
-        'cam1': 90,
-        'cam2': 90,
-        'cam3': 90,
-        'cam4': 90,
-    }
+    # 초기 기준 각도 90도로 고정   3시 방향 부터 0도, 12시 방향 90도, 9시 180도, 6시 270도
+    Angle_dict = { cam : 90 for cam in camList} 
 
     # index 0 : drone number, index 1 : ymin, index 2 : xmin, index 3: ymax, index 4 : xmax
     # index 5 : score, index 6 : pulse(pan, tilt), index 7 : distance
@@ -185,7 +168,7 @@ class WebcamVideoStream:
                 if left_dnum == 0:
                     return 'True 0 0'
                 elif max(self.Dronedata_Dict[left][5]) > max(self.Dronedata_Dict[right][5]):
-                     return 'True L ' + str(self.Dronedata_Dict[left][6][1])
+                    return 'True L ' + str(self.Dronedata_Dict[left][6][1])
                 elif max(self.Dronedata_Dict[right][5]) < max(self.Dronedata_Dict[left][5]):
                     return 'True R ' + str(self.Dronedata_Dict[right][6][1])
                 else:
@@ -267,7 +250,7 @@ class WebcamVideoStream:
                             cv2.rectangle(frame, (xmin[i],ymin[i]), (xmax[i],ymax[i]), cls.rectangule_color, cls.boxthickness)  #xmax = x+w ymax = y+h
                         else:
                             cv2.rectangle(frame, (xmin[i],ymin[i]), (xmax[i],ymax[i]), (0,255,255), cls.boxthickness)  #xmax = x+w ymax = y+h 
-                         
+                        
                         label = '%s: %d%%' % ('Drone', int(scores[i]*100)) # 드론일 확률 나타냄
                         labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
                         label_ymin = max(ymin[i], labelSize[1] + 10) 
